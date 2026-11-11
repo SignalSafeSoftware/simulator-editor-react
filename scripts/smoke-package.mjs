@@ -9,7 +9,8 @@ const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
 function developmentDependency(name) {
   const spec = pkg.devDependencies[name];
   assert(typeof spec === "string", `Missing development dependency ${name}`);
-  return spec.startsWith("file:") ? `file:${resolve(root, spec.slice(5))}` : spec;
+  assert(!spec.startsWith("file:"), `Published dependency required: ${name}`);
+  return spec;
 }
 const target = mkdtempSync(join(tmpdir(), "simulator-editor-package-"));
 const packed = JSON.parse(

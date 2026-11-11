@@ -1,6 +1,7 @@
 # Package links and examples
 
-- [Repository](https://github.com/SignalSafeSoftware/simulator-editor-react) (private; access required)
+- [Repository](https://github.com/SignalSafeSoftware/simulator-editor-react)
+- [npm package](https://www.npmjs.com/package/@signalsafe/simulator-editor-react)
 - [Live editor example](https://signalsafesoftware.github.io/simulator-editor-react/)
 - [Live shared device example](https://signalsafesoftware.github.io/simulator-device/)
 
@@ -16,6 +17,6 @@ Core is headless; React and the Bootstrap theme are exercised through the shared
 
 ## Source examples
 
-- [Standalone editor example](examples/editor/README.md): install, build and browser-test commands, archived candidate provenance and Pages privacy.
+- [Standalone editor example](examples/editor/README.md): install, build and browser-test commands, registry dependencies and Pages provenance.
 - [Portable device example](https://github.com/SignalSafeSoftware/simulator-device/tree/main/docs/examples/local-apps)
-- [Editor example source](https://github.com/SignalSafeSoftware/simulator-editor-react/tree/codex/simulator-editor-release-20261110/docs/examples/editor) (private; review branch until merged)
+- [Editor example source](https://github.com/SignalSafeSoftware/simulator-editor-react/tree/main/docs/examples/editor)

@@ -11,7 +11,7 @@
   "dependencies": {
     "@signalsafe/simulator-core": "0.7.2",
     "@signalsafe/simulator-device": "0.21.4",
-    "@signalsafe/simulator-editor-react": "file:vendor/npm/signalsafe-simulator-editor-react-0.1.0.tgz",
+    "@signalsafe/simulator-editor-react": "0.1.1",
     "@signalsafe/simulator-react": "0.21.2",
     "@signalsafe/simulator-theme-bootstrap": "0.13.4",
     "@signalsafe/tree-spec-editor-theme-bootstrap": "0.3.7",

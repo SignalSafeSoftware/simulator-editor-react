@@ -88,7 +88,7 @@ The JSON tab accepts a host-rendered JSON editor through `renderJsonEditor`. Del
 
 ## Clean development install
 
-Run `npm ci --ignore-scripts` from a fresh checkout. [Development dependencies](docs/development-dependencies.md) explains the checked local simulator archives used before registry publication and the complete CI verification sequence. Published peer requirements remain unchanged.
+Run `npm ci --ignore-scripts` from a fresh checkout. [Development dependencies](docs/development-dependencies.md) explains public registry versions and the complete CI verification sequence. Published peer requirements remain unchanged.
 
 ### Workspace tabs
 

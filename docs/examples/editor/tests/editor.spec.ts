@@ -8,7 +8,7 @@ test('provides reciprocal source links and updates a selected conversation previ
  await expect(page.getByRole('complementary',{name:'Live simulator preview'})).toContainText('Let us verify the sender');
  await page.getByRole('tab',{name:'JSON',exact:true}).click();
  await expect(page.getByLabel('Simulator content JSON')).toContainText('conversation-sam');
- await page.getByRole('tab',{name:'Simulator',exact:true}).click();
+ await page.getByRole('tab',{name:'Preview',exact:true}).click();
  await page.getByRole('button',{name:'Reset example',exact:true}).click();
  await expect(page.getByRole('textbox',{name:'Contact name',exact:true})).toHaveValue('Alex Example');
  expect(errors).toEqual([]);
@@ -35,4 +35,17 @@ test('renders the package-owned phone frame and icon font',async({page})=>{
  expect(geometry.radius).toBe('38px');expect(geometry.width).toBeGreaterThan(300);expect(geometry.height).toBeGreaterThan(600);expect(geometry.background).not.toBe('rgba(0, 0, 0, 0)');
  await expect(page.locator('.simulator-root.simulator-host-device')).toHaveCount(1);
  await page.evaluate(()=>document.fonts.ready);expect(await page.evaluate(()=>document.fonts.check('16px bootstrap-icons'))).toBe(true);
+});
+
+test('keeps metadata and conversation selection across the unified tabs', async ({page}) => {
+ await page.goto('/');
+ await expect(page.getByRole('tablist',{name:'Simulator content views'}).getByRole('tab')).toHaveText(['Properties','Preview','JSON']);
+ await page.getByRole('treeitem',{name:'Sam Example',exact:true}).click();
+ await page.getByRole('tab',{name:'Properties',exact:true}).click();
+ await page.getByLabel('Simulator name',{exact:true}).fill('Authored example');
+ await page.getByRole('tab',{name:'JSON',exact:true}).click();
+ await page.getByRole('tab',{name:'Preview',exact:true}).click();
+ await expect(page.getByRole('complementary',{name:'Live simulator preview'})).toContainText('Let us verify the sender');
+ await page.getByRole('tab',{name:'Properties',exact:true}).click();
+ await expect(page.getByLabel('Simulator name',{exact:true})).toHaveValue('Authored example');
 });
