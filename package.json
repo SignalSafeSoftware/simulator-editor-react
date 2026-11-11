@@ -157,7 +157,8 @@
     "README.md",
     "LICENSE",
     "CHANGELOG.md",
-    "docs"
+    "docs",
+    "!docs/examples"
   ],
   "engines": {
     "node": ">=24"
@@ -219,5 +220,5 @@
   "bugs": {
     "url": "https://github.com/SignalSafeSoftware/simulator-editor-react/issues"
   },
-  "homepage": "https://github.com/SignalSafeSoftware/simulator-editor-react#readme"
+  "homepage": "https://signalsafesoftware.github.io/simulator-editor-react/"
 }

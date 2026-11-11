@@ -1,5 +1,7 @@
 # @signalsafe/simulator-editor-react
 
+[Repository](https://github.com/SignalSafeSoftware/simulator-editor-react) · [Live editor example](https://signalsafesoftware.github.io/simulator-editor-react/) · [Package links and examples](docs/links.md)
+
 Prepared source: **0.1.0**. See [current summary](docs/current-state-summary.md), [changelog](CHANGELOG.md) and [coordinated release preparation](docs/release-2026-11-10.md). Publication status and installed host versions are tracked separately.
 
 Controlled React authoring for simulator content. This package contains the existing conversation, message, contact, email, phone, browser, Home and starting-screen editors extracted from DeliveryPlus.
