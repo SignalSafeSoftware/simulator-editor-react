@@ -1,22 +1,11 @@
 {
-  "repository": "https://github.com/SignalSafeSoftware/simulator-editor-react",
-  "source_commit": "49d26c12476334540ac2f70e90927501bcf5040f",
-  "source_branch": "codex/simulator-editor-release-20261110",
-  "candidate_archives": {
-    "signalsafe-simulator-core-0.7.2.tgz": "686f7a51eae567c5beceb4fedd4aa171ef7996457c2ff10fe68c5eac6c6aae76",
-    "signalsafe-simulator-react-0.21.2.tgz": "e5189d13f7624683231c185fc5b078497f307d61937c82dede15380ab39aa86b",
-    "signalsafe-simulator-editor-react-0.1.0.tgz": "ad23210d492105b14883f2daf99e15b51f1baf6b4e38fbefa219ba5692b4c353",
-    "signalsafe-simulator-device-0.21.3.tgz": "e1288db32ff3e5f425e96d264b027408d13f8ef2dca5e43c9037e0f8805df72e",
-    "signalsafe-simulator-theme-bootstrap-0.13.3.tgz": "e9976eff847976f7abe561cb2da4008f3c8e9f8aedf863cbf304d9bf00f24286"
+  "source_commit": "e48f8dfbbed327bc23b8c507d1726d23063e9b6d",
+  "public_registry_versions": {
+    "core": "0.7.2",
+    "react": "0.21.2",
+    "device": "0.21.4",
+    "theme": "0.13.4"
   },
-  "data": "Synthetic fixtures only",
-  "verification": "182 editor package tests; 100% all coverage metrics; 4 example browser tests including shared device frame and theme",
-  "sourceCommit": "9e869dceedc93a697872fe8c22bc2d627f3e3d26",
-  "packages": {
-    "signalsafe-simulator-core-0.7.2.tgz": "f9c60be0d1621214c8e9dc8cc3bafabc8ea4100a0aee26d00c349a5e4a45d1bc",
-    "signalsafe-simulator-device-0.21.3.tgz": "c67ab07f9eed3cc27ff5e22aeb1d3f2f1c19e1654c177fd60c642f7de15731bc",
-    "signalsafe-simulator-editor-react-0.1.0.tgz": "c36042fe7e8e9d6a97f5a1ff9118dab46b82e6962276caca0e9b5e55ec81fd12",
-    "signalsafe-simulator-react-0.21.2.tgz": "4f616a3f3856f1d2c24b9b86a0fb7ab02fac8448813239754f3b5f67329c2a17",
-    "signalsafe-simulator-theme-bootstrap-0.13.3.tgz": "5ba2ca00fb80c8bcfeb5d7068258067ade89471285f44b9286a0e6d181dce9df"
-  }
+  "editor": "private unpublished 0.1.0 archive",
+  "data": "synthetic examples only"
 }
