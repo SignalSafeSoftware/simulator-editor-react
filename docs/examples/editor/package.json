@@ -1,0 +1,38 @@
+{
+  "name": "simulator-editor-example",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test:browser": "playwright test"
+  },
+  "dependencies": {
+    "@signalsafe/simulator-core": "file:vendor/npm/signalsafe-simulator-core-0.7.2.tgz",
+    "@signalsafe/simulator-device": "file:vendor/npm/signalsafe-simulator-device-0.21.3.tgz",
+    "@signalsafe/simulator-editor-react": "file:vendor/npm/signalsafe-simulator-editor-react-0.1.0.tgz",
+    "@signalsafe/simulator-react": "file:vendor/npm/signalsafe-simulator-react-0.21.2.tgz",
+    "@signalsafe/simulator-theme-bootstrap": "file:vendor/npm/signalsafe-simulator-theme-bootstrap-0.13.3.tgz",
+    "@signalsafe/tree-spec-editor-theme-bootstrap": "0.3.7",
+    "bootstrap": "5.3.8",
+    "bootstrap-icons": "1.13.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "22.17.0",
+    "@types/react": "18.3.0",
+    "@types/react-dom": "18.3.0",
+    "typescript": "5.9.3",
+    "vite": "8.3.5"
+  },
+  "overrides": {
+    "@signalsafe/simulator-core": "$@signalsafe/simulator-core",
+    "@signalsafe/simulator-react": "$@signalsafe/simulator-react",
+    "@signalsafe/simulator-editor-react": "$@signalsafe/simulator-editor-react",
+    "@signalsafe/simulator-device": "$@signalsafe/simulator-device",
+    "@signalsafe/simulator-theme-bootstrap": "$@signalsafe/simulator-theme-bootstrap"
+  }
+}
