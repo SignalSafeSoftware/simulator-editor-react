@@ -1,0 +1,223 @@
+{
+  "name": "@signalsafe/simulator-editor-react",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Controlled React authoring workspace and panels for SignalSafe simulator data.",
+  "license": "MIT",
+  "sideEffects": [
+    "*.css",
+    "**/*.css"
+  ],
+  "exports": {
+    "./SimulatorDateTimeField": {
+      "types": "./dist/SimulatorDateTimeField.d.ts",
+      "import": "./dist/SimulatorDateTimeField.js",
+      "default": "./dist/SimulatorDateTimeField.js"
+    },
+    "./simulatorConversationAdapter": {
+      "types": "./dist/simulatorConversationAdapter.d.ts",
+      "import": "./dist/simulatorConversationAdapter.js",
+      "default": "./dist/simulatorConversationAdapter.js"
+    },
+    "./contactModel": {
+      "types": "./dist/contactModel.d.ts",
+      "import": "./dist/contactModel.js",
+      "default": "./dist/contactModel.js"
+    },
+    "./SimulatorAdditionalContentEditor": {
+      "types": "./dist/SimulatorAdditionalContentEditor.d.ts",
+      "import": "./dist/SimulatorAdditionalContentEditor.js",
+      "default": "./dist/SimulatorAdditionalContentEditor.js"
+    },
+    "./SimulatorEditorPanel": {
+      "types": "./dist/SimulatorEditorPanel.d.ts",
+      "import": "./dist/SimulatorEditorPanel.js",
+      "default": "./dist/SimulatorEditorPanel.js"
+    },
+    "./SimulatorConversationsEditor": {
+      "types": "./dist/SimulatorConversationsEditor.d.ts",
+      "import": "./dist/SimulatorConversationsEditor.js",
+      "default": "./dist/SimulatorConversationsEditor.js"
+    },
+    "./parseConversations": {
+      "types": "./dist/parseConversations.d.ts",
+      "import": "./dist/parseConversations.js",
+      "default": "./dist/parseConversations.js"
+    },
+    "./simulatorEmailContent": {
+      "types": "./dist/simulatorEmailContent.d.ts",
+      "import": "./dist/simulatorEmailContent.js",
+      "default": "./dist/simulatorEmailContent.js"
+    },
+    "./SimulatorContactNumbers": {
+      "types": "./dist/SimulatorContactNumbers.d.ts",
+      "import": "./dist/SimulatorContactNumbers.js",
+      "default": "./dist/SimulatorContactNumbers.js"
+    },
+    "./editorTypes": {
+      "types": "./dist/editorTypes.d.ts",
+      "import": "./dist/editorTypes.js",
+      "default": "./dist/editorTypes.js"
+    },
+    "./SimulatorStartingScreen": {
+      "types": "./dist/SimulatorStartingScreen.d.ts",
+      "import": "./dist/SimulatorStartingScreen.js",
+      "default": "./dist/SimulatorStartingScreen.js"
+    },
+    "./simulatorRowLabel": {
+      "types": "./dist/simulatorRowLabel.d.ts",
+      "import": "./dist/simulatorRowLabel.js",
+      "default": "./dist/simulatorRowLabel.js"
+    },
+    "./SimulatorSectionEditor": {
+      "types": "./dist/SimulatorSectionEditor.d.ts",
+      "import": "./dist/SimulatorSectionEditor.js",
+      "default": "./dist/SimulatorSectionEditor.js"
+    },
+    "./simulatorEmailFolders": {
+      "types": "./dist/simulatorEmailFolders.d.ts",
+      "import": "./dist/simulatorEmailFolders.js",
+      "default": "./dist/simulatorEmailFolders.js"
+    },
+    "./SimulatorContactEndpointsEditor": {
+      "types": "./dist/SimulatorContactEndpointsEditor.d.ts",
+      "import": "./dist/SimulatorContactEndpointsEditor.js",
+      "default": "./dist/SimulatorContactEndpointsEditor.js"
+    },
+    "./SimulatorContactContentEditor": {
+      "types": "./dist/SimulatorContactContentEditor.d.ts",
+      "import": "./dist/SimulatorContactContentEditor.js",
+      "default": "./dist/SimulatorContactContentEditor.js"
+    },
+    "./SimulatorEmailContentEditor": {
+      "types": "./dist/SimulatorEmailContentEditor.d.ts",
+      "import": "./dist/SimulatorEmailContentEditor.js",
+      "default": "./dist/SimulatorEmailContentEditor.js"
+    },
+    "./emailBody": {
+      "types": "./dist/emailBody.d.ts",
+      "import": "./dist/emailBody.js",
+      "default": "./dist/emailBody.js"
+    },
+    "./SimulatorEditor": {
+      "types": "./dist/SimulatorEditor.d.ts",
+      "import": "./dist/SimulatorEditor.js",
+      "default": "./dist/SimulatorEditor.js"
+    },
+    "./SimulatorRecordList": {
+      "types": "./dist/SimulatorRecordList.d.ts",
+      "import": "./dist/SimulatorRecordList.js",
+      "default": "./dist/SimulatorRecordList.js"
+    },
+    "./SimulatorHomeContentEditor": {
+      "types": "./dist/SimulatorHomeContentEditor.d.ts",
+      "import": "./dist/SimulatorHomeContentEditor.js",
+      "default": "./dist/SimulatorHomeContentEditor.js"
+    },
+    "./SimulatorContactsEditor": {
+      "types": "./dist/SimulatorContactsEditor.d.ts",
+      "import": "./dist/SimulatorContactsEditor.js",
+      "default": "./dist/SimulatorContactsEditor.js"
+    },
+    "./SimulatorMessageList": {
+      "types": "./dist/SimulatorMessageList.d.ts",
+      "import": "./dist/SimulatorMessageList.js",
+      "default": "./dist/SimulatorMessageList.js"
+    },
+    "./SimulatorConversationEditor": {
+      "types": "./dist/SimulatorConversationEditor.d.ts",
+      "import": "./dist/SimulatorConversationEditor.js",
+      "default": "./dist/SimulatorConversationEditor.js"
+    },
+    "./SimulatorContentFields": {
+      "types": "./dist/SimulatorContentFields.d.ts",
+      "import": "./dist/SimulatorContentFields.js",
+      "default": "./dist/SimulatorContentFields.js"
+    },
+    "./styles.css": "./styles.css",
+    "./activityDates": {
+      "types": "./dist/activityDates.d.ts",
+      "import": "./dist/activityDates.js",
+      "default": "./dist/activityDates.js"
+    },
+    "./simulatorHomeContent": {
+      "types": "./dist/simulatorHomeContent.d.ts",
+      "import": "./dist/simulatorHomeContent.js",
+      "default": "./dist/simulatorHomeContent.js"
+    },
+    "./simulatorRegionalOptions": {
+      "types": "./dist/simulatorRegionalOptions.d.ts",
+      "import": "./dist/simulatorRegionalOptions.js",
+      "default": "./dist/simulatorRegionalOptions.js"
+    }
+  },
+  "files": [
+    "dist",
+    "styles.css",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "docs"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "node scripts/clean-dist.mjs && tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.tests.json",
+    "lint": "npm run check:modules && oxlint src tests --deny-warnings",
+    "check:modules": "node scripts/check-module-boundaries.mjs",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "format": "oxfmt src tests scripts vitest.config.ts",
+    "format:check": "oxfmt --check src tests scripts vitest.config.ts",
+    "smoke:package": "node scripts/smoke-package.mjs",
+    "prepublishOnly": "node scripts/check-release.mjs && npm run typecheck && npm run lint && npm test && npm run build"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "bootstrap": "^5.3.0",
+    "@signalsafe/simulator-core": "^0.7.2",
+    "@signalsafe/simulator-react": "^0.21.2",
+    "@signalsafe/tree-spec-editor-theme-bootstrap": "^0.3.7",
+    "@signalsafe/simulator-theme-bootstrap": "^0.13.3"
+  },
+  "dependencies": {
+    "lucide-react": "^1.49.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@signalsafe/simulator-core": "0.7.2",
+    "@signalsafe/simulator-react": "0.21.2",
+    "@signalsafe/tree-spec-editor-theme-bootstrap": "0.3.7",
+    "bootstrap": "5.3.8",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@types/node": "^22.0.0",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "jsdom": "^26.0.0",
+    "typescript": "5.9.3",
+    "vitest": "3.2.7",
+    "@vitest/coverage-v8": "3.2.7",
+    "oxlint": "1.86.0",
+    "oxfmt": "0.71.0"
+  },
+  "overrides": {
+    "@types/estree": "1.0.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SignalSafeSoftware/simulator-editor-react.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SignalSafeSoftware/simulator-editor-react/issues"
+  },
+  "homepage": "https://github.com/SignalSafeSoftware/simulator-editor-react#readme"
+}
