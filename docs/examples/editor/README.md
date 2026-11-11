@@ -14,7 +14,7 @@ For automated browser checks, install Chromium with "npx playwright install chro
 
 This host example controls section state and projects it into a shared simulator preview. It includes synthetic conversations, email, contacts, call history and a sandbox browser page. Nothing is saved, sent or synchronized with a server. Reset restores the fixture; Download exports the editor section data, not a host-specific published simulator envelope.
 
-The versioned archives in vendor/npm/ are exact unpublished review candidates with SHA-256 recorded in its manifest. The npm lock uses real local archive and registry integrity values. This keeps the example reproducible before coordinated package publication; it does not turn a candidate into a published npm release. Rebuild and replace these archives together after source changes; do not edit extracted dependencies.
+The example installs public core 0.7.2, React 0.21.2, device 0.21.4 and theme 0.13.4 from npm. Only the private, unpublished editor remains a versioned archive in vendor/npm/ with a recorded SHA-256. The npm lockfile records actual registry and archive integrity values. Do not publish the private editor or edit extracted dependencies.
 
 The editor accepts a renderPreview slot. The example's adapter owns projection and session state; screens, contact cards and shared styling remain package-owned. A real host must supply persistence, authorization and the rest of its integrations.
 
