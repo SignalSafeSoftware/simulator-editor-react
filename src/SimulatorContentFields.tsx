@@ -133,7 +133,7 @@ export function SimulatorContentFields({
               compactTimestamp={compactTimestamp}
               timestampDateLabel={timestampDateLabel}
               requiredTimestamp={requiredTimestamp}
-              inferSnippets={inferSnippets || label === "Messages"}
+              inferSnippets={inferSnippets}
               label={`${label} ${index + 1}`}
               value={item}
               onChange={(next) =>
@@ -175,7 +175,7 @@ export function SimulatorContentFields({
               compactTimestamp={compactTimestamp}
               timestampDateLabel={timestampDateLabel}
               requiredTimestamp={requiredTimestamp}
-              inferSnippets={inferSnippets || label === "Messages"}
+              inferSnippets={inferSnippets}
               label={contentLabel(key)}
               value={item}
               onChange={(next) => onChange({ ...value, [key]: next })}

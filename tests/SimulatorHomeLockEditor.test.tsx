@@ -43,3 +43,17 @@ it("retains a failed password and explains unsupported browsers", async () => {
   expect(screen.getByText(/require HTTPS/)).toBeTruthy();
   mocks.available = true;
 });
+it("describes non-Error lock failures without exposing arbitrary thrown values", async () => {
+  const change = vi.fn();
+  mocks.available = true;
+  mocks.create.mockRejectedValue("failure");
+  render(<SimulatorHomeLockEditor value={null} onChange={change} />);
+  fireEvent.change(screen.getByLabelText("New screen password"), {
+    target: { value: "fictional" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Set screen password" }));
+  await waitFor(() =>
+    expect(screen.getByRole("alert")).toHaveTextContent("Could not set the screen password."),
+  );
+  expect(change).not.toHaveBeenCalled();
+});

@@ -2,6 +2,8 @@
 
 ## 0.1.0 — prepared 2026-11-10
 
+- Add repository, live example and related-package links; document the coordinated 100% coverage verification and synthetic editor example.
+
 - Introduce the controlled authoring workspace, section JSON editors and searchable starting-item selection.
 - Synchronize selected conversations, messages, emails, contacts, photos and Vault content with host preview navigation.
 - Keep preview browsing separate from persisted starting positions; capture Starting Page and Reset to Home remain explicit.

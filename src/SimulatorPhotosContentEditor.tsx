@@ -124,8 +124,7 @@ export function SimulatorPhotosContentEditor({
             {contentObject(item.metadata) && (
               <SimulatorPhotoMetadataFields
                 value={
-                  homeContentSchema.shape.photos.parse({ items: [item] }).items[0]?.metadata ??
-                  emptyMetadata
+                  homeContentSchema.shape.photos.unwrap().shape.items.element.parse(item).metadata
                 }
                 onChange={(metadata) =>
                   change({ ...item, metadata, updatedAt: new Date().toISOString() })

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import { SimulatorPhotoMetadataFields } from "../src/SimulatorPhotoMetadataFields";
 import { emptyMetadata, type PhotoMetadata } from "@signalsafe/simulator-core/apps/contracts";
 it("uses shared separate date/time controls and preserves hidden zone/location metadata", () => {
@@ -46,4 +46,19 @@ it("keeps partial date-first input until a time completes a local capture value"
   fireEvent.change(screen.getByLabelText("Time"), { target: { value: "14:15" } });
   expect(saved.capturedAt).toBe("2026-11-09T14:15");
   expect(saved.timeZone).toBe("");
+});
+it("clears coordinates explicitly and preserves them when a browser supplies a nonfinite number", () => {
+  const changed = vi.fn();
+  render(
+    <SimulatorPhotoMetadataFields
+      value={{ ...emptyMetadata, latitude: 40, longitude: 20 }}
+      onChange={changed}
+    />,
+  );
+  const latitude = screen.getByLabelText("Latitude");
+  fireEvent.change(latitude, { target: { value: "" } });
+  expect(changed).toHaveBeenCalledWith(expect.objectContaining({ latitude: null }));
+  latitude.setAttribute("type", "text");
+  fireEvent.change(latitude, { target: { value: "not a number" } });
+  expect(changed).toHaveBeenLastCalledWith(expect.objectContaining({ latitude: 40 }));
 });

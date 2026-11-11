@@ -10,7 +10,7 @@ export interface StartingPositionOption {
 }
 const records = (value: unknown): Record<string, unknown>[] =>
   Array.isArray(value) ? value.filter(contentObject) : [];
-const label = (row: Record<string, unknown>): string => {
+const label = (row: Record<string, unknown>, fallbackId: string): string => {
   for (const key of [
     "display_name",
     "contact_name",
@@ -19,10 +19,9 @@ const label = (row: Record<string, unknown>): string => {
     "subject",
     "name",
     "number",
-    "id",
   ])
     if (typeof row[key] === "string" && row[key]) return row[key];
-  return "Untitled item";
+  return fallbackId;
 };
 /** Stable ids distinguish records even when their visible names are identical. */
 export function startingPositionOptions(
@@ -32,13 +31,13 @@ export function startingPositionOptions(
 ): StartingPositionOption[] {
   screen = startingScreenCollection(app, screen);
   const section = (key: string) => sections.find((item) => item.key === key)?.value;
-  const itemLabel = (row: Record<string, unknown>, kind: string, prefix: string) =>
+  const itemLabel = (row: Record<string, unknown>, id: string, kind: string, prefix: string) =>
     simulatorRowLabel(
       kind === "call"
-        ? [row.timestamp, row.type, label(row)]
+        ? [row.timestamp, row.type, label(row, id)]
             .filter((part) => typeof part === "string" && part)
             .join(" · ")
-        : prefix + label(row),
+        : prefix + label(row, id),
     );
   const items = (
     kind: "conversation" | "contact" | "call" | "email" | "photo" | "vault-entry",
@@ -47,7 +46,7 @@ export function startingPositionOptions(
   ) =>
     records(value).flatMap((row): StartingPositionOption[] =>
       typeof row.id === "string" && row.id
-        ? [{ label: itemLabel(row, kind, prefix), target: { kind, id: row.id } }]
+        ? [{ label: itemLabel(row, row.id, kind, prefix), target: { kind, id: row.id } }]
         : [],
     );
   if (app === "messages" && screen === "threads") return items("conversation", section("messages"));

@@ -12,7 +12,12 @@ const sentTime = (message: Record<string, unknown>): number => {
   return Number.isFinite(time) ? time : 0;
 };
 /** Join legacy list/detail data into complete editable records, retaining stable internal IDs. */
-export function emailMessages(email: Record<string, unknown>): Record<string, unknown>[] {
+export type SimulatorEmailMessage = Record<string, unknown> & {
+  id: string;
+  date_at: string;
+  folder_id: string;
+};
+export function emailMessages(email: Record<string, unknown>): SimulatorEmailMessage[] {
   const rows = Array.isArray(email.messages) ? email.messages.filter(contentObject) : [];
   const detail = contentObject(email.detail) ? email.detail : undefined;
   const joined = rows.map((row) => (detail && row.id === detail.id ? { ...row, ...detail } : row));

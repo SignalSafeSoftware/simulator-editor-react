@@ -9,7 +9,6 @@ import { SimulatorEmailContentEditor } from "./SimulatorEmailContentEditor.js";
 import { SimulatorAdditionalContentEditor } from "./SimulatorAdditionalContentEditor.js";
 import { SimulatorConversationsEditor } from "./SimulatorConversationsEditor.js";
 import { SimulatorStartingScreen } from "./SimulatorStartingScreen.js";
-import { SimulatorContentFields } from "./SimulatorContentFields.js";
 import { parseConversations } from "./parseConversations.js";
 import type { SimulatorContact } from "@signalsafe/simulator-core/devicePayload";
 import type { SimulatorEditorSection, SimulatorEditorSectionValue } from "./editorTypes.js";
@@ -116,14 +115,6 @@ export function SimulatorSectionEditor({
       value={selected.value}
       sections={sections}
       internet={internet}
-      onChange={(value) => onChange(selected.key, value)}
-    />
-  ) : selected ? (
-    <SimulatorContentFields
-      key={selected.key}
-      inferSnippets={false}
-      label={selected.label}
-      value={selected.value}
       onChange={(value) => onChange(selected.key, value)}
     />
   ) : null;

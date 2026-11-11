@@ -137,15 +137,11 @@ export function SimulatorConversationsEditor({
                   active.contact_numbers ?? (active.contact_number ? [active.contact_number] : [])
                 }
                 onChange={(next) => {
-                  const id = message ?? createSimulatorId();
+                  const id = messageKey(active.messages[index], index);
                   const updated = contentObject(next)
                     ? {
                         ...next,
-                        id:
-                          contentObject(active.messages[index]) &&
-                          typeof active.messages[index].id === "string"
-                            ? active.messages[index].id
-                            : id,
+                        id,
                       }
                     : next;
                   messages(

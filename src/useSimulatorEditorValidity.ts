@@ -22,9 +22,7 @@ export function useSimulatorEditorValidity({
     (item) =>
       item.key === "email" &&
       contentObject(item.value) &&
-      emailMessages(item.value).some(
-        (message) => !localDateTime(typeof message.date_at === "string" ? message.date_at : ""),
-      ),
+      emailMessages(item.value).some((message) => !localDateTime(message.date_at)),
   );
   const invalidHome = sections.some((item) =>
     item.key === "home"
