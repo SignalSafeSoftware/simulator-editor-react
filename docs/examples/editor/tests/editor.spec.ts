@@ -26,3 +26,13 @@ test('retains invalid JSON for repair instead of accepting it silently',async({p
  const input=page.getByLabel('Simulator content JSON');await input.fill('[');
  await expect(input).toHaveValue('[');await expect(page.getByRole('button',{name:'Download section data'})).toBeDisabled();
 });
+
+test('renders the package-owned phone frame and icon font',async({page})=>{
+ await page.goto('/');
+ const shell=page.getByTestId('simulator-device-shell');
+ await expect(shell).toBeVisible();
+ const geometry=await page.locator('.simulator-root.simulator-host-device').evaluate(element=>{const style=getComputedStyle(element),box=element.getBoundingClientRect();return {radius:style.borderRadius,width:box.width,height:box.height,background:style.backgroundColor};});
+ expect(geometry.radius).toBe('38px');expect(geometry.width).toBeGreaterThan(300);expect(geometry.height).toBeGreaterThan(600);expect(geometry.background).not.toBe('rgba(0, 0, 0, 0)');
+ await expect(page.locator('.simulator-root.simulator-host-device')).toHaveCount(1);
+ await page.evaluate(()=>document.fonts.ready);expect(await page.evaluate(()=>document.fonts.check('16px bootstrap-icons'))).toBe(true);
+});

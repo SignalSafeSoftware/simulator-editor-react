@@ -19,3 +19,5 @@ The versioned archives in vendor/npm/ are exact unpublished review candidates wi
 The editor accepts a renderPreview slot. The example's adapter owns projection and session state; screens, contact cards and shared styling remain package-owned. A real host must supply persistence, authorization and the rest of its integrations.
 
 GitHub Pages serves only the built static dist/ output. Repository privacy is preserved, but the demo and its synthetic content are publicly accessible. The gh-pages branch contains the deployed build and a provenance file. Run the documented package quality and browser checks before replacing that branch. There are no API keys, authentication cookies, private fixtures or live-service integrations in the output.
+
+The preview wraps `SimulatorPhoneDevice` in the shared `simulator-root simulator-host-device` theme classes. Page spacing stays outside that wrapper. Import Bootstrap Icons as required by the authoring theme; never recreate a device skin in example CSS. Browser tests assert the shared frame, palette and icon font in addition to authoring behavior.

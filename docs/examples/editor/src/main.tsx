@@ -5,6 +5,7 @@ import type { SimulatorEditorSection } from '@signalsafe/simulator-editor-react/
 import { exampleSections } from './fixtures';
 import { Preview } from './Preview';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import '@signalsafe/simulator-editor-react/styles.css';
 import '@signalsafe/simulator-theme-bootstrap/styles.css';
 import './page.css';

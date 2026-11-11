@@ -43,5 +43,5 @@ function SessionPreview({value,context}:{value:SimulatorDevicePayload;context:Si
   const target=app==='phone'&&screen==='contacts'&&contactId?{kind:'contact' as const,id:contactId}:value.entry_point?.app===app&&value.entry_point?.screen===screen?value.entry_point.target:undefined;
   context.onStartingPositionChange?.({app,screen,...(target?{target}:{})});
  },[state.view,contactId,context.onStartingPositionChange,value.entry_point]);
- return <div className="example-device"><SimulatorPhoneDevice state={state} dispatch={dispatch} onSelectedContactChange={setContactId}/></div>;
+ return <div className="example-device"><div className="simulator-root simulator-host-device"><SimulatorPhoneDevice state={state} dispatch={dispatch} onSelectedContactChange={setContactId}/></div></div>;
 }
