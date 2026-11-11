@@ -1,11 +1,16 @@
 {
-  "source_commit": "e48f8dfbbed327bc23b8c507d1726d23063e9b6d",
+  "source_commit": "b130737b211465ffa1752aae17412f7b53265c3f",
   "public_registry_versions": {
     "core": "0.7.2",
     "react": "0.21.2",
     "device": "0.21.4",
-    "theme": "0.13.4"
+    "theme": "0.13.4",
+    "editor": "0.1.1"
   },
-  "editor": "private unpublished 0.1.0 archive",
-  "data": "synthetic examples only"
+  "data": "synthetic examples only",
+  "checks": {
+    "browser_tests": 5,
+    "package_tests": 184,
+    "source_coverage": "100% statements, branches, functions, lines"
+  }
 }
