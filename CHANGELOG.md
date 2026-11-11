@@ -13,3 +13,5 @@
 - Keep envelopes, HTTP, authorization, saving and publication in the host.
 
 Prepared source version; npm publication and downstream registry-lock refresh are separate steps.
+
+- Refresh public simulator development/peer references to published core 0.7.2, React 0.21.2 and theme 0.13.4. Packed consumers refresh online metadata; the editor remains private and unpublished.

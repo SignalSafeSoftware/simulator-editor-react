@@ -61,11 +61,10 @@ writeFileSync(
     },
   }),
 );
-execFileSync(
-  "npm",
-  ["install", "--ignore-scripts", "--no-audit", "--no-fund", "--prefer-offline"],
-  { cwd: target, stdio: "inherit" },
-);
+execFileSync("npm", ["install", "--ignore-scripts", "--no-audit", "--no-fund", "--prefer-online"], {
+  cwd: target,
+  stdio: "inherit",
+});
 writeFileSync(
   join(target, "smoke.mjs"),
   `import React from 'react';import {renderToString} from 'react-dom/server';

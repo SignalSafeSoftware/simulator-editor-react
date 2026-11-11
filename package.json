@@ -185,15 +185,15 @@
     "@signalsafe/simulator-core": "^0.7.2",
     "@signalsafe/simulator-react": "^0.21.2",
     "@signalsafe/tree-spec-editor-theme-bootstrap": "^0.3.7",
-    "@signalsafe/simulator-theme-bootstrap": "^0.13.3"
+    "@signalsafe/simulator-theme-bootstrap": "^0.13.4"
   },
   "dependencies": {
     "lucide-react": "^1.49.0",
     "zod": "^4.0.0"
   },
   "devDependencies": {
-    "@signalsafe/simulator-core": "file:docs/examples/editor/vendor/npm/signalsafe-simulator-core-0.7.2.tgz",
-    "@signalsafe/simulator-react": "file:docs/examples/editor/vendor/npm/signalsafe-simulator-react-0.21.2.tgz",
+    "@signalsafe/simulator-core": "0.7.2",
+    "@signalsafe/simulator-react": "0.21.2",
     "@signalsafe/tree-spec-editor-theme-bootstrap": "0.3.7",
     "bootstrap": "5.3.8",
     "react": "18.3.1",
@@ -209,7 +209,7 @@
     "@vitest/coverage-v8": "3.2.7",
     "oxlint": "1.86.0",
     "oxfmt": "0.71.0",
-    "@signalsafe/simulator-theme-bootstrap": "file:docs/examples/editor/vendor/npm/signalsafe-simulator-theme-bootstrap-0.13.3.tgz"
+    "@signalsafe/simulator-theme-bootstrap": "0.13.4"
   },
   "overrides": {
     "@types/estree": "1.0.8",
