@@ -1,0 +1,55 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Check release tag
+        run: node --input-type=module -e 'import assert from "node:assert/strict"; import {readFileSync} from "node:fs"; const pkg=JSON.parse(readFileSync("package.json","utf8")); assert.equal(process.env.GITHUB_REF,`refs/tags/v${pkg.version}`); assert.equal(pkg.publishConfig.access,"public");'
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run test:coverage
+      - run: npm run build
+      - run: npm run smoke:package
+      - uses: actions/upload-artifact@v6
+        with:
+          name: release-package
+          path: |
+            dist
+            package.json
+            README.md
+            LICENSE
+            CHANGELOG.md
+            styles.css
+            docs
+          retention-days: 7
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v7
+        with:
+          name: release-package
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+      - name: Publish verified package
+        run: npm publish --access public --provenance --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -60,10 +60,15 @@ export interface SimulatorJsonEditorContext {
   describedBy?: string;
   invalid: boolean;
 }
+export type SimulatorEditorView = "properties" | "simulator" | "json";
+
 export interface SimulatorEditorProps {
   sections: readonly SimulatorEditorSectionValue[];
   onChange: (section: SimulatorEditorSection, value: unknown) => void;
   renderJsonEditor?: (context: SimulatorJsonEditorContext) => ReactNode;
+  properties?: ReactNode;
+  view?: SimulatorEditorView;
+  onViewChange?: (view: SimulatorEditorView) => void;
   renderPreview: (context: SimulatorEditorPreviewContext) => ReactNode;
   contacts?: readonly SimulatorContact[];
   disabled?: boolean;

@@ -2,7 +2,7 @@
 
 [Repository](https://github.com/SignalSafeSoftware/simulator-editor-react) · [Live editor example](https://signalsafesoftware.github.io/simulator-editor-react/) · [Package links and examples](docs/links.md)
 
-Prepared source: **0.1.0**. See [current summary](docs/current-state-summary.md), [changelog](CHANGELOG.md) and [coordinated release preparation](docs/release-2026-11-10.md). Publication status and installed host versions are tracked separately.
+Release version: **0.1.1**. See [current summary](docs/current-state-summary.md), [changelog](CHANGELOG.md) and [coordinated release preparation](docs/release-2026-11-10.md). Publication status and installed host versions are tracked separately.
 
 Controlled React authoring for simulator content. This package contains the existing conversation, message, contact, email, phone, browser, Home and starting-screen editors extracted from DeliveryPlus.
 
@@ -26,15 +26,13 @@ Use `disabled` for read-only authoring. `onValidityChange` reports whether the c
 
 Import Bootstrap 5 once in the host, then `@signalsafe/simulator-editor-react/styles.css`. The editor reuses the graph editor's Bootstrap panel/icon theme through its peer dependency. The phone preview keeps its own simulator theme. Row summaries are capped at 40 Unicode characters; full content is preserved.
 
-## Local review
-
-This initial version is unpublished. DeliveryPlus uses its explicit checksum-verified `SIMULATOR_LOCAL_ARTIFACTS` integration. Build it with:
+## Installation
 
 ```sh
-python3 frontend/scripts/build-local-simulator-review.py --ecosystem /path/to/ecosystem --package simulator-editor-react
+npm install @signalsafe/simulator-editor-react@0.1.1
 ```
 
-Registry dependency pins and publication policy remain unchanged. Environments consuming the newly extracted editor must enable the local artifact directory until an authorized release is published and pinned. Do not publish the local prerelease; the release guard rejects it.
+Install its declared React, Bootstrap and SignalSafe peer dependencies in your host. DeliveryPlus uses the published package directly; local review archives and TypeScript aliases are not required.
 
 ## Verification
 
@@ -60,7 +58,7 @@ Voicemail authoring includes Caller name, Phone number, Transcript and date/time
 
 ## Unified Calls
 
-Phone authoring uses one Calls collection and one Call type dropdown: Incoming, Calling, Received, Accepted, Missed, Voicemail, Unanswered, Cancelled and Declined. Caller name, Phone number, date/time and relevant details share one selected-record form. Multiple voicemail records retain separate transcripts. The optional preview context `selectedCallId` / `onCallSelect` keeps record selection synchronized. Ambiguous imported outgoing outcomes remain explicit rather than guessed. See the [current migration and integration guide](../../DeliveryPlus/docs/quality/simulator-ui/unified-calls.md).
+Phone authoring uses one Calls collection and one Call type dropdown: Incoming, Calling, Received, Accepted, Missed, Voicemail, Unanswered, Cancelled and Declined. Caller name, Phone number, date/time and relevant details share one selected-record form. Multiple voicemail records retain separate transcripts. The optional preview context `selectedCallId` / `onCallSelect` keeps record selection synchronized. Ambiguous imported outgoing outcomes remain explicit rather than guessed. The shared core phone-call contract preserves each authored call ID and outcome.
 
 ## Home app authoring
 
@@ -91,3 +89,7 @@ The JSON tab accepts a host-rendered JSON editor through `renderJsonEditor`. Del
 ## Clean development install
 
 Run `npm ci --ignore-scripts` from a fresh checkout. [Development dependencies](docs/development-dependencies.md) explains the checked local simulator archives used before registry publication and the complete CI verification sequence. Published peer requirements remain unchanged.
+
+### Workspace tabs
+
+The preview tab is labeled **Preview**. Supply the optional `properties` React node to show **Properties, Preview, JSON** in one tab row. Hosts own metadata fields and persistence. Optional `view` and `onViewChange` props integrate host routes without remounting the preview or losing JSON drafts. Invalid JSON blocks leaving JSON until corrected.

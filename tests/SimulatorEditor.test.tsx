@@ -66,7 +66,7 @@ it("blocks invalid section JSON, then recovers without losing its draft", () => 
   expect(validity).toHaveBeenLastCalledWith(true);
   expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   fireEvent.keyDown(screen.getByRole("tab", { name: "JSON" }), { key: "ArrowLeft" });
-  expect(screen.getByRole("tab", { name: "Simulator" })).toHaveFocus();
+  expect(screen.getByRole("tab", { name: "Preview" })).toHaveFocus();
 });
 it("disables authoring but leaves shortcut navigation usable", () => {
   render(<Workspace disabled />);
@@ -189,4 +189,60 @@ it("reports unfinished section JSON separately from required email dates for hos
     target: { value: '{"messages":[]}' },
   });
   expect(jsonValidity).toHaveBeenLastCalledWith(true);
+});
+
+it("combines host properties with Preview and JSON while preserving inputs and preview state", () => {
+  const changed = vi.fn();
+  render(
+    <SimulatorEditor
+      sections={[{ key: "messages", label: "Messages", value: [] }]}
+      onChange={changed}
+      properties={
+        <label>
+          Name
+          <input defaultValue="Original" />
+        </label>
+      }
+      renderPreview={() => <input aria-label="Preview state" defaultValue="Selected contact" />}
+    />,
+  );
+  expect(screen.getAllByRole("tab").map((tab) => tab.textContent)).toEqual([
+    "Properties",
+    "Preview",
+    "JSON",
+  ]);
+  fireEvent.change(screen.getByLabelText("Name"), { target: { value: "Edited" } });
+  fireEvent.keyDown(screen.getByRole("tab", { name: "Properties" }), { key: "ArrowRight" });
+  expect(screen.getByRole("tab", { name: "Preview" })).toHaveFocus();
+  fireEvent.change(screen.getByLabelText("Preview state"), {
+    target: { value: "Another contact" },
+  });
+  fireEvent.click(screen.getByRole("tab", { name: "Properties" }));
+  expect(screen.getByLabelText("Name")).toHaveValue("Edited");
+  fireEvent.keyDown(screen.getByRole("tab", { name: "Properties" }), { key: "ArrowLeft" });
+  expect(screen.getByRole("tab", { name: "JSON" })).toHaveFocus();
+  fireEvent.change(screen.getByLabelText("Simulator content JSON"), { target: { value: "{" } });
+  expect(screen.getByRole("tab", { name: "Properties" })).toBeDisabled();
+  fireEvent.change(screen.getByLabelText("Simulator content JSON"), { target: { value: "[]" } });
+  fireEvent.click(screen.getByRole("tab", { name: "Preview" }));
+  expect(screen.getByLabelText("Preview state")).toHaveValue("Another contact");
+});
+
+it("lets the host control the view without changing the selected content", () => {
+  const changed = vi.fn();
+  const viewChanged = vi.fn();
+  const props = {
+    sections: [{ key: "messages" as const, label: "Messages", value: [] }],
+    onChange: changed,
+    properties: <p>Metadata</p>,
+    renderPreview: () => <p>Device preview</p>,
+    onViewChange: viewChanged,
+  };
+  const { rerender } = render(<SimulatorEditor {...props} view="properties" />);
+  fireEvent.click(screen.getByRole("tab", { name: "Preview" }));
+  expect(viewChanged).toHaveBeenLastCalledWith("simulator");
+  expect(screen.getByRole("tab", { name: "Properties" })).toHaveAttribute("aria-selected", "true");
+  rerender(<SimulatorEditor {...props} view="simulator" />);
+  expect(screen.getByText("Device preview")).toBeVisible();
+  expect(changed).not.toHaveBeenCalled();
 });

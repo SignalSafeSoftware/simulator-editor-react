@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1 — 2026-11-11
+
+- First public npm release, with the repository and live example available publicly.
+- Add a tag-verified publish workflow gated by strict checks, complete coverage, build and packed-consumer smoke tests.
+
+- Rename Simulator to Preview and support host Properties in the same accessible tab row.
+- Preserve preview state, keyboard navigation, invalid JSON protection and optional host route control across tabs.
+
 ## 0.1.0 — prepared 2026-11-10
 
 - Fix clean CI installs with checked simulator development archives and a synchronized lockfile; resolve archive paths for isolated package smoke consumers.

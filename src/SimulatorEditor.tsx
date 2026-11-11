@@ -1,3 +1,4 @@
+import { SimulatorEditorTabs } from "./SimulatorEditorTabs.js";
 import { useSimulatorHomePage } from "./useSimulatorHomePage.js";
 import { useSimulatorCollectionSelection } from "./useSimulatorCollectionSelection.js";
 import { useSimulatorRecordSelection } from "./useSimulatorRecordSelection.js";
@@ -24,6 +25,9 @@ export function SimulatorEditor({
   onChange,
   renderPreview,
   renderJsonEditor,
+  properties,
+  view,
+  onViewChange,
   contacts = [],
   disabled = false,
   onValidityChange,
@@ -80,7 +84,14 @@ export function SimulatorEditor({
   );
   const [jsonText, setJsonText] = useState("");
   const [jsonError, setJsonError] = useState("");
-  const [tab, setTab] = useState<"simulator" | "json">("simulator");
+  const [localTab, setLocalTab] = useState<"properties" | "simulator" | "json">(
+    properties ? "properties" : "simulator",
+  );
+  const tab = view ?? localTab;
+  function setTab(next: typeof localTab) {
+    setLocalTab(next);
+    onViewChange?.(next);
+  }
   const { missingEmailDate, missingActivityDate, invalidHome } = useSimulatorEditorValidity({
     pendingVaultDraft: vault.vaultDraft !== null,
     sections,
@@ -92,6 +103,9 @@ export function SimulatorEditor({
     onChange(key, value);
     if (tab === "json") setJsonText(JSON.stringify(value, null, 2));
   }
+  const tabs = properties
+    ? (["properties", "simulator", "json"] as const)
+    : (["simulator", "json"] as const);
   const selected = sections.find((item) => item.key === section) ?? sections[0];
   return (
     <SimulatorCollectionContext.Provider
@@ -167,43 +181,26 @@ export function SimulatorEditor({
           </fieldset>
         </aside>
         <section className="col-12 col-xl-6" aria-label="Simulator workspace">
-          <div className="nav nav-tabs mb-3" role="tablist" aria-label="Simulator content views">
-            {(["simulator", "json"] as const).map((item) => (
-              <button
-                type="button"
-                key={item}
-                role="tab"
-                id={`${viewId}-${item}-tab`}
-                aria-controls={`${viewId}-${item}-panel`}
-                aria-selected={tab === item}
-                tabIndex={tab === item ? 0 : -1}
-                className={`nav-link${tab === item ? " active" : ""}`}
-                disabled={Boolean(jsonError) && item !== "json"}
-                onKeyDown={(event) => {
-                  if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key) || jsonError)
-                    return;
-                  event.preventDefault();
-                  const next =
-                    event.key === "Home"
-                      ? "simulator"
-                      : event.key === "End"
-                        ? "json"
-                        : tab === "json"
-                          ? "simulator"
-                          : "json";
-                  setTab(next);
-                  if (next === "json") setJsonText(JSON.stringify(selected?.value, null, 2));
-                  globalThis.document.getElementById(`${viewId}-${next}-tab`)?.focus();
-                }}
-                onClick={() => {
-                  setTab(item);
-                  if (item === "json") setJsonText(JSON.stringify(selected?.value, null, 2));
-                }}
-              >
-                {item === "simulator" ? "Simulator" : "JSON"}
-              </button>
-            ))}
-          </div>
+          <SimulatorEditorTabs
+            tabs={tabs}
+            tab={tab}
+            viewId={viewId}
+            disabled={Boolean(jsonError)}
+            onChange={(next) => {
+              setTab(next);
+              if (next === "json") setJsonText(JSON.stringify(selected?.value, null, 2));
+            }}
+          />
+          {properties && (
+            <div
+              role="tabpanel"
+              id={`${viewId}-properties-panel`}
+              aria-labelledby={`${viewId}-properties-tab`}
+              hidden={tab !== "properties"}
+            >
+              {properties}
+            </div>
+          )}
           <div
             role="tabpanel"
             id={`${viewId}-simulator-panel`}

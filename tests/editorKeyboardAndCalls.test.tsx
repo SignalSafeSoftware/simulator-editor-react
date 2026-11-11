@@ -15,7 +15,7 @@ it("supports every workspace tab navigation key without changing authored data",
   );
   for (const key of ["ArrowRight", "ArrowLeft", "End", "Home", "x"])
     fireEvent.keyDown(screen.getByRole("tab", { selected: true }), { key });
-  expect(screen.getByRole("tab", { name: "Simulator" })).toHaveAttribute("aria-selected", "true");
+  expect(screen.getByRole("tab", { name: "Preview" })).toHaveAttribute("aria-selected", "true");
   expect(changed).not.toHaveBeenCalled();
 });
 it("navigates tree groups and children with keyboard and ignores bubbled child keys", () => {
