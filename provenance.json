@@ -10,8 +10,8 @@
     "signalsafe-simulator-theme-bootstrap-0.13.3.tgz": "e9976eff847976f7abe561cb2da4008f3c8e9f8aedf863cbf304d9bf00f24286"
   },
   "data": "Synthetic fixtures only",
-  "verification": "182 editor package tests, 100% all coverage metrics; 3 example browser tests passed",
-  "sourceCommit": "2ab01cd2be5b2065a7065c6e204362d991f9ac25",
+  "verification": "182 editor package tests; 100% all coverage metrics; 4 example browser tests including shared device frame and theme",
+  "sourceCommit": "9e869dceedc93a697872fe8c22bc2d627f3e3d26",
   "packages": {
     "signalsafe-simulator-core-0.7.2.tgz": "f9c60be0d1621214c8e9dc8cc3bafabc8ea4100a0aee26d00c349a5e4a45d1bc",
     "signalsafe-simulator-device-0.21.3.tgz": "c67ab07f9eed3cc27ff5e22aeb1d3f2f1c19e1654c177fd60c642f7de15731bc",
