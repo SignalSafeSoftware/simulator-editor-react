@@ -24,3 +24,7 @@ The editor example carries exact local review archives and a SHA-256 manifest. I
 The coordinated versions are absent from npm. Registry dependency lock entries, public-device-demo pins and host registry requirements retain their last real published versions until dependency-order npm publication is authorized and succeeds. Local review artifacts and the editor example explicitly opt into the prepared versions. No registry integrity values were fabricated, release tags created or npm publication performed. Registry/frozen-lock CI and Sonar release certification remain separate gates; draft PRs must not be represented as publish-ready.
 
 Earlier November 10 reports retain their historical results. This report supersedes their package coverage findings.
+
+## Clean CI install follow-up
+
+The editor root CI now installs the committed candidate archives with a regenerated lockfile. A fresh checkout passed the exact `npm ci --ignore-scripts` workflow and every subsequent quality/build/smoke command. The earlier editor ETARGET blocker is resolved for source CI; registry publication remains a separate consumer release gate. See [development dependencies](development-dependencies.md).

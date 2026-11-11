@@ -2,6 +2,8 @@
 
 ## 0.1.0 — prepared 2026-11-10
 
+- Fix clean CI installs with checked simulator development archives and a synchronized lockfile; resolve archive paths for isolated package smoke consumers.
+
 - Add repository, live example and related-package links; document the coordinated 100% coverage verification and synthetic editor example.
 
 - Introduce the controlled authoring workspace, section JSON editors and searchable starting-item selection.

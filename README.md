@@ -87,3 +87,7 @@ Selecting a Vault folder or secret in the authoring tree requests navigation in 
 Photos selection is synchronized with the shared preview: opening a photo selects its collection row and properties; preview Back clears both. Preview saves/deletes update unsaved authored photo data. Selecting a valid photo in the collection opens the matching preview, including after returning Home; deleting its selected row returns the preview to the gallery. Incomplete upload drafts remain editable without navigating to an invalid preview record.
 
 The JSON tab accepts a host-rendered JSON editor through `renderJsonEditor`. DeliveryPlus supplies the existing JSONEditor library with code, tree and text modes. Raw incomplete JSON and array sections remain editable; existing section validation controls when changes apply. Hosts without the slot retain the accessible textarea fallback. Section navigation projects the requested preview immediately so stale screen callbacks cannot redirect edits to the previous section.
+
+## Clean development install
+
+Run `npm ci --ignore-scripts` from a fresh checkout. [Development dependencies](docs/development-dependencies.md) explains the checked local simulator archives used before registry publication and the complete CI verification sequence. Published peer requirements remain unchanged.

@@ -23,3 +23,7 @@ The source includes the current GitHub main branch plus the reviewed local simul
 ## Current verification and examples
 
 182 package tests pass; all four executable-source coverage metrics are 100%. See [November 11 verification](verification-2026-11-11.md) for the coordinated 1,465-test result, public examples and remaining registry-release gates.
+
+## Clean CI install follow-up
+
+The editor root CI now installs the committed candidate archives with a regenerated lockfile. A fresh checkout passed the exact `npm ci --ignore-scripts` workflow and every subsequent quality/build/smoke command. The earlier editor ETARGET blocker is resolved for source CI; registry publication remains a separate consumer release gate. See [development dependencies](development-dependencies.md).

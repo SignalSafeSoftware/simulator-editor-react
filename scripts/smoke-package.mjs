@@ -6,6 +6,11 @@ import { pathToFileURL, fileURLToPath } from "node:url";
 import assert from "node:assert/strict";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+function developmentDependency(name) {
+  const spec = pkg.devDependencies[name];
+  assert(typeof spec === "string", `Missing development dependency ${name}`);
+  return spec.startsWith("file:") ? `file:${resolve(root, spec.slice(5))}` : spec;
+}
 const target = mkdtempSync(join(tmpdir(), "simulator-editor-package-"));
 const packed = JSON.parse(
   execFileSync("npm", ["pack", "--ignore-scripts", "--json", "--pack-destination", target], {
@@ -33,14 +38,22 @@ writeFileSync(
       [pkg.name]: `file:${join(target, packed.filename)}`,
       react: "18.3.1",
       "react-dom": "18.3.1",
-      "@signalsafe/simulator-core": pkg.devDependencies["@signalsafe/simulator-core"],
-      "@signalsafe/simulator-react": pkg.devDependencies["@signalsafe/simulator-react"],
-      "@signalsafe/tree-spec-editor-theme-bootstrap":
-        pkg.devDependencies["@signalsafe/tree-spec-editor-theme-bootstrap"],
-      "@signalsafe/simulator-theme-bootstrap":
-        pkg.peerDependencies["@signalsafe/simulator-theme-bootstrap"],
+      "@signalsafe/simulator-core": developmentDependency("@signalsafe/simulator-core"),
+      "@signalsafe/simulator-react": developmentDependency("@signalsafe/simulator-react"),
+      "@signalsafe/tree-spec-editor-theme-bootstrap": developmentDependency(
+        "@signalsafe/tree-spec-editor-theme-bootstrap",
+      ),
+      "@signalsafe/simulator-theme-bootstrap": developmentDependency(
+        "@signalsafe/simulator-theme-bootstrap",
+      ),
       bootstrap: "5.3.8",
     },
+    overrides: Object.fromEntries(
+      ["simulator-core", "simulator-react", "simulator-theme-bootstrap"].map((name) => [
+        `@signalsafe/${name}`,
+        `$@signalsafe/${name}`,
+      ]),
+    ),
     devDependencies: {
       typescript: "5.9.3",
       "@types/react": "18.3.0",
