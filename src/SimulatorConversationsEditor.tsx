@@ -48,8 +48,12 @@ export function SimulatorConversationsEditor({
   function update(id: string, next: SimulatorConversation) {
     onChange(value.map((item) => (item.id === id ? { ...next, id } : item)));
   }
-  function messages(next: unknown[]) {
-    if (active) update(active.id, { ...active, messages: next, last_at: conversationTime(next) });
+  function messages(conversation: AuthoredConversation, next: unknown[]) {
+    update(conversation.id, {
+      ...conversation,
+      messages: next,
+      last_at: conversationTime(next),
+    });
   }
   function addMessage(id: string) {
     const parent = value.find((item) => item.id === id);
@@ -69,6 +73,8 @@ export function SimulatorConversationsEditor({
     label: item.contact_name || item.contact_number || `Conversation ${i + 1}`,
     children: item.messages.map((entry, index) => ({
       id: JSON.stringify([item.id, messageKey(entry, index)]),
+      owner: item,
+      messageId: messageKey(entry, index),
       label:
         contentObject(entry) && typeof entry.text === "string" && entry.text.trim()
           ? entry.text
@@ -108,21 +114,15 @@ export function SimulatorConversationsEditor({
           } else {
             const node = nodes.flatMap((item) => item.children).find((item) => item.id === id);
             if (!node) return;
-            const pair: unknown = JSON.parse(id);
-            if (Array.isArray(pair)) {
-              const owner = value.find((item) => item.id === pair[0]);
-              if (owner) {
-                const remaining = owner.messages.filter(
-                  (entry, index) => messageKey(entry, index) !== pair[1],
-                );
-                update(owner.id, {
-                  ...owner,
-                  messages: remaining,
-                  last_at: conversationTime(remaining),
-                });
-                select(owner.id);
-              }
-            }
+            const remaining = node.owner.messages.filter(
+              (entry, index) => messageKey(entry, index) !== node.messageId,
+            );
+            update(node.owner.id, {
+              ...node.owner,
+              messages: remaining,
+              last_at: conversationTime(remaining),
+            });
+            select(node.owner.id);
           }
         }}
       />
@@ -145,6 +145,7 @@ export function SimulatorConversationsEditor({
                       }
                     : next;
                   messages(
+                    active,
                     sortConversationMessages(
                       active.messages.map((entry, i) => (i === index ? updated : entry)),
                     ),

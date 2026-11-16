@@ -2,6 +2,9 @@
 
 ## 0.1.2 — 2026-11-15
 
+- Upgrade the matched development Vitest/coverage pair to 4.1.12 with a genuine lock, removing the vulnerable test-worker/mock dependency chain without overrides.
+- Add keyboard, focus, stale-selection and malformed-callback recovery regressions. Retain typed owner/message identities on generated conversation child nodes instead of decoding them again during deletion; public IDs and validation remain unchanged.
+
 - Keep conversation normalization idempotent when dated runtime replies are added to an undated authored script. Preserve authored message identities, order, explicit delays and existing timestamps without repeatedly assigning the last-activity timestamp to undated messages.
 - Preserve genuine legacy timestamp migration when no message already represents that timestamp.
 - Support the compatible React 0.21 and 0.22 package lines through an additive peer range; no public export, storage or host API shape changes.
