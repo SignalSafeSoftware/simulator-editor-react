@@ -47,10 +47,15 @@ export function conversationTime(messages: readonly unknown[]): string {
     : [...ordered].reverse().find((message) => object(message) && text(message.timestamp));
   return object(latest) ? text(latest.timestamp) : "";
 }
-/** Preserve a legacy conversation time on its final message when it had no timestamp. */
+/** Migrate a legacy conversation time once, without copying an existing message time. */
 export function conversationMessages(messages: readonly unknown[], legacyTime: unknown): unknown[] {
   const latest = messages[messages.length - 1];
-  if (!object(latest) || latest.timestamp !== undefined || !text(legacyTime))
+  if (
+    !object(latest) ||
+    latest.timestamp !== undefined ||
+    !text(legacyTime) ||
+    messages.some((message) => object(message) && message.timestamp === legacyTime)
+  )
     return sortConversationMessages(messages);
   return sortConversationMessages(
     messages.map((message, index) =>

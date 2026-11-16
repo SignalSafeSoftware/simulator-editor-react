@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.2 — 2026-11-15
+
+- Keep conversation normalization idempotent when dated runtime replies are added to an undated authored script. Preserve authored message identities, order, explicit delays and existing timestamps without repeatedly assigning the last-activity timestamp to undated messages.
+- Preserve genuine legacy timestamp migration when no message already represents that timestamp.
+- Support the compatible React 0.21 and 0.22 package lines through an additive peer range; no public export, storage or host API shape changes.
+
+The user-authorized release follows the existing matching-tag workflow with provenance. Earlier local preparation notes are historical; publication and normal registry adoption are verified separately.
+
 ## 0.1.1 — 2026-11-11
 
 - First public npm release, with the repository and live example available publicly.

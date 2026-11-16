@@ -1,4 +1,5 @@
 import { expect, it } from "vitest";
+import { parseConversations } from "../src/parseConversations";
 import {
   readSimulatorConversation,
   writeSimulatorConversation,
@@ -108,4 +109,57 @@ it("orders dated messages chronologically and derives the latest conversation da
     { text: "Later", timestamp: "2026-11-07T16:00:00Z" },
   ]);
   expect(edited.last_at).toBe("2026-11-07T16:00:00Z");
+});
+
+it("does not move a reply timestamp onto undated scripted messages during repeated normalization", () => {
+  const authored = [
+    { id: "zero", from: "them", text: "Immediate", delay_seconds: 0 },
+    { id: "half", from: "them", text: "After half a second", delay_seconds: 0.5 },
+    { id: "one", from: "them", text: "After one second", delay_seconds: 0.5 },
+  ];
+  const reply = {
+    id: "local-reply",
+    from: "me",
+    text: "Runtime reply",
+    timestamp: "2026-11-15T12:00:00.000Z",
+  };
+  const original = {
+    id: "thread-A",
+    contact_name: "Example",
+    contact_number: "+12025550110",
+    last_at: "",
+    messages: [...authored, reply],
+  };
+  const before = JSON.stringify(original);
+  const [initial] = parseConversations([original]);
+  if (!initial) throw new Error("Missing normalized conversation");
+  let conversation = initial;
+  for (let pass = 0; pass < 3; pass += 1) {
+    const { id, ...fields } = conversation;
+    const projected = writeSimulatorConversation({ thread_detail: { id } }, fields);
+    const read = readSimulatorConversation(projected);
+    const [next] = parseConversations([{ id, ...read }]);
+    if (!next) throw new Error("Missing round-trip conversation");
+    expect(next.messages).toEqual([reply, ...authored]);
+    expect(next.last_at).toBe(reply.timestamp);
+    conversation = next;
+  }
+  expect(JSON.stringify(original)).toBe(before);
+});
+
+it("migrates a genuine missing legacy timestamp once while preserving dated messages", () => {
+  const earlier = { from: "them", text: "Earlier", timestamp: "2026-11-15T11:00:00.000Z" };
+  const source = {
+    thread_detail: {
+      id: "legacy-mixed",
+      last_at: "2026-11-15T12:00:00.000Z",
+      messages: [earlier, { from: "me", text: "Latest" }],
+    },
+  };
+  const migrated = readSimulatorConversation(source);
+  expect(migrated.messages).toEqual([
+    earlier,
+    { from: "me", text: "Latest", timestamp: source.thread_detail.last_at },
+  ]);
+  expect(readSimulatorConversation(writeSimulatorConversation(source, migrated))).toEqual(migrated);
 });
