@@ -72,7 +72,7 @@ export function SimulatorContactEndpointsEditor({
           return (
             <>
               <label className="form-label d-block mb-3">
-                Label
+                Label{" "}
                 <input
                   className="form-control"
                   value={endpoint.label}

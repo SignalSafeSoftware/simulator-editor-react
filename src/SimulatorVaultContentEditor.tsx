@@ -164,7 +164,7 @@ export function SimulatorVaultContentEditor({
         <SimulatorEditorPanel title="Vault folder">
           <div className="graph-editor-card__body">
             <label className="form-label d-block mb-3">
-              Folder name
+              Folder name{" "}
               <input
                 key={folder}
                 className="form-control"

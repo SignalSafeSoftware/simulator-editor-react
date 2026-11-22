@@ -24,7 +24,7 @@ export function SimulatorConversationEditor({
   return (
     <section aria-label="Conversation editor">
       <label className="form-label d-block mb-3">
-        Contact name
+        Contact name{" "}
         <input
           className="form-control"
           value={value.contact_name}
@@ -44,7 +44,7 @@ export function SimulatorConversationEditor({
         }
       />
       <label className="form-label d-block mb-3">
-        Conversation Date &amp; Time
+        Conversation Date &amp; Time{" "}
         <input
           className="form-control"
           value={dateTime}
