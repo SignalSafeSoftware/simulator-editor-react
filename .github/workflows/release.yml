@@ -22,7 +22,7 @@ jobs:
       - run: npm run test:coverage
       - run: npm run build
       - run: npm run smoke:package
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: release-package
           path: |
