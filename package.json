@@ -203,7 +203,7 @@
     "@types/node": "^22.0.0",
     "@testing-library/react": "^16.0.0",
     "@testing-library/jest-dom": "^6.0.0",
-    "jsdom": "^26.0.0",
+    "jsdom": "^31.0.1",
     "typescript": "5.9.3",
     "vitest": "4.1.12",
     "@vitest/coverage-v8": "4.1.12",
