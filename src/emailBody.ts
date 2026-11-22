@@ -14,12 +14,17 @@ function isEmailLink(value: unknown): value is EmailLink {
     Object.keys(value).every((key) => ["href", "text", "title"].includes(key))
   );
 }
+const LEADING_URL_PUNCTUATION = "<([{ '\"“‘";
+const TRAILING_URL_PUNCTUATION = ">])}'\"”’,.;!";
+function trimUrlPunctuation(token: string): string {
+  let start = 0;
+  let end = token.length;
+  while (start < end && LEADING_URL_PUNCTUATION.includes(token.charAt(start))) start += 1;
+  while (end > start && TRAILING_URL_PUNCTUATION.includes(token.charAt(end - 1))) end -= 1;
+  return token.slice(start, end);
+}
 function containsUrl(body: string, href: string): boolean {
-  return body
-    .split(/\s+/u)
-    .some(
-      (token) => token === href || token.replace(/^[<([{ '"“‘]+|[>\])}'"”’,.;!]+$/gu, "") === href,
-    );
+  return body.split(/\s+/u).some((token) => token === href || trimUrlPunctuation(token) === href);
 }
 /** Convert valid legacy metadata once; preserve unrecognized data for JSON repair. */
 function messageBody(value: Record<string, unknown>): Record<string, unknown> {

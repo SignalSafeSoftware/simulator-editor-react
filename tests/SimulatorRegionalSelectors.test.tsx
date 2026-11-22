@@ -27,6 +27,22 @@ it("includes complete ISO lists and supported IANA identifiers and aliases", () 
     label: "ZZZ",
   });
 });
+it("retains identifier ordering for regional codes instead of locale-sensitive label ordering", () => {
+  for (const options of [regionalCurrencyOptions, regionalTimeZoneOptions]) {
+    const values = options.map((option) => option.value);
+    expect(
+      values.slice(1).every((value, index) => {
+        const previous = values[index];
+        return previous !== undefined && previous <= value;
+      }),
+    ).toBe(true);
+  }
+  const zones = regionalTimeZoneOptions.map((option) => option.value);
+  expect(zones.indexOf("America/Port-au-Prince")).toBeLessThan(
+    zones.indexOf("America/Port_of_Spain"),
+  );
+  expect(zones.indexOf("CET")).toBeLessThan(zones.indexOf("Canada/Atlantic"));
+});
 it("searches regional names/codes and keeps exactly one saved value per field", () => {
   let saved: HomeContent["settings"] = {};
   function Editor() {

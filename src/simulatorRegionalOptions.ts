@@ -2,7 +2,11 @@ import { countryCodes, currencyCodes, timeZoneIds } from "./regionalOptionCodes.
 import type { SimulatorSelectOption } from "./SimulatorSingleSelect.js";
 const regions = new Intl.DisplayNames(["en"], { type: "region" });
 const currencies = new Intl.DisplayNames(["en"], { type: "currency" });
-const unique = (values: readonly string[]) => [...new Set(values)].sort();
+// These are identifier codes; retain deterministic UTF-16 ordering across locales.
+function compareRegionalCodes(left: string, right: string): number {
+  return Number(left > right) - Number(left < right);
+}
+const unique = (values: readonly string[]) => [...new Set(values)].sort(compareRegionalCodes);
 export const regionalCountryOptions: readonly SimulatorSelectOption[] = countryCodes.map(
   (value) => ({ value, label: `${value} — ${regions.of(value) ?? value}` }),
 );

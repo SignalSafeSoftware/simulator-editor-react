@@ -25,7 +25,7 @@ function matchingSummary(
 export function sortConversationMessages(messages: readonly unknown[]): unknown[] {
   const timestamp = (message: unknown): number => {
     const value = object(message) ? text(message.timestamp) : "";
-    const parsed = /^\d{4}-\d{2}-\d{2}T/u.test(value) ? Date.parse(value) : NaN;
+    const parsed = /^\d{4}-\d{2}-\d{2}T/u.test(value) ? Date.parse(value) : Number.NaN;
     return Number.isFinite(parsed) ? parsed : Number.POSITIVE_INFINITY;
   };
   return [...messages].sort((left, right) => {
