@@ -13,9 +13,33 @@ updates:
           interval: weekly
       open-pull-requests-limit: 5
       groups:
+          react:
+              patterns:
+                  - react
+                  - react-dom
+                  - "@types/react"
+                  - "@types/react-dom"
+          vitest:
+              patterns:
+                  - vitest
+                  - "@vitest/*"
           minor-and-patch:
               patterns:
-                  - '*'
+                  - "*"
               update-types:
                   - minor
                   - patch
+      # The shared package/host peer contract is React 18.
+      ignore:
+          - dependency-name: react
+            update-types:
+                - version-update:semver-major
+          - dependency-name: react-dom
+            update-types:
+                - version-update:semver-major
+          - dependency-name: "@types/react"
+            update-types:
+                - version-update:semver-major
+          - dependency-name: "@types/react-dom"
+            update-types:
+                - version-update:semver-major
