@@ -22,7 +22,7 @@ export function SimulatorPhoneCallFields({
   return (
     <>
       <label className="form-label d-block mb-3">
-        Call type
+        Call type{" "}
         <select
           className="form-select"
           aria-label="Call type"

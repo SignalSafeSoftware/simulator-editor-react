@@ -45,7 +45,7 @@ export function SimulatorHomeSettingsEditor({
     <SimulatorEditorPanel title="Settings">
       <div className="graph-editor-card__body">
         <label className="form-label d-block mb-3">
-          Appearance preset
+          Appearance preset{" "}
           <select
             className="form-select"
             value={
@@ -105,7 +105,7 @@ export function SimulatorHomeSettingsEditor({
           </div>
         </div>
         <label className="form-label d-block mb-3">
-          Language
+          Language{" "}
           <select
             className="form-select"
             value={regional.language}
@@ -120,7 +120,7 @@ export function SimulatorHomeSettingsEditor({
         </label>
         <div className="row g-3">
           <label className="form-label d-flex flex-column mb-3 col-12 col-sm-6">
-            Date format
+            Date format{" "}
             <select
               className="form-select mt-auto"
               value={regional.dateFormat}
@@ -134,7 +134,7 @@ export function SimulatorHomeSettingsEditor({
             </select>
           </label>
           <label className="form-label d-flex flex-column mb-3 col-12 col-sm-6">
-            Time format
+            Time format{" "}
             <select
               className="form-select mt-auto"
               value={regional.timeFormat}

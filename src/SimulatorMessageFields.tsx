@@ -14,7 +14,7 @@ export function SimulatorMessageFields({
     <>
       {contentObject(item) && (
         <label className="form-label d-block mb-3">
-          Sender
+          Sender{" "}
           <select
             aria-label="Sender"
             className="form-select"

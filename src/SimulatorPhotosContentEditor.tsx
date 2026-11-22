@@ -60,7 +60,7 @@ export function SimulatorPhotosContentEditor({
         renderEditor={(item, change) => (
           <>
             <label className="form-label d-block mb-3">
-              Image file
+              Image file{" "}
               <input
                 type="file"
                 className="form-control"

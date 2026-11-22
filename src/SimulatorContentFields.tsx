@@ -31,7 +31,7 @@ export function SimulatorContentFields({
   if (label === "Folder id")
     return (
       <label className="form-label d-block mb-3">
-        Folder
+        Folder{" "}
         <select
           className="form-select"
           value={simulatorEmailFolder(value)}
@@ -59,7 +59,7 @@ export function SimulatorContentFields({
   if (label === "Direction")
     return (
       <label className="form-label d-block mb-3">
-        Direction
+        Direction{" "}
         <select
           className="form-select"
           aria-label="Direction"
@@ -76,7 +76,7 @@ export function SimulatorContentFields({
   if (label === "Duration seconds")
     return (
       <label className="form-label d-block mb-3">
-        Duration seconds
+        Duration seconds{" "}
         <input
           type="number"
           min={0}
@@ -93,7 +93,7 @@ export function SimulatorContentFields({
   if (label === "From" && (value === "them" || value === "me"))
     return (
       <label className="form-label d-block mb-3">
-        Sender
+        Sender{" "}
         <select
           className="form-select"
           value={value}
@@ -107,7 +107,7 @@ export function SimulatorContentFields({
   if (label === "Delay seconds")
     return (
       <label className="form-label d-block mb-3">
-        Delay seconds
+        Delay seconds{" "}
         <input
           type="number"
           className="form-control"

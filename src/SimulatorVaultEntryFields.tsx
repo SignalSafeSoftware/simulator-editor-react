@@ -19,7 +19,7 @@ export function SimulatorVaultEntryFields({
   return (
     <>
       <label className="form-label d-block mb-3">
-        Entry type
+        Entry type{" "}
         <select
           className="form-select"
           value={item.type}

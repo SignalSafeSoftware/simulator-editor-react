@@ -68,7 +68,7 @@ export function SimulatorStartingScreen({
   return (
     <>
       <label className="form-label d-block mb-3">
-        Starting app
+        Starting app{" "}
         <select
           className="form-select"
           aria-label="Starting app"
@@ -90,7 +90,7 @@ export function SimulatorStartingScreen({
         </select>
       </label>
       <label className="form-label d-block mb-3">
-        Starting screen
+        Starting screen{" "}
         <select
           className="form-select"
           aria-label="Starting screen"

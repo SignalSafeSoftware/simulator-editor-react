@@ -17,7 +17,7 @@ export function SimulatorHomeLockEditor({
       <legend className="h6">Screen password</legend>
       <p>{value ? "Password configured" : "No screen password"}</p>
       <label className="form-label d-block mb-3">
-        New screen password
+        New screen password{" "}
         <input
           className="form-control"
           type="password"
