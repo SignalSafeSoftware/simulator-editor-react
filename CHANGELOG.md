@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.3 — prepared 2026-11-22
+
+- Make spacing explicit between authoring labels and their existing controls without changing accessible names or adding wrappers.
+- Replace super-linear email-link punctuation trimming with a linear scan while preserving exact surrounding-character rules, migration output and idempotence.
+- Keep regional identifier ordering deterministic with an explicit UTF-16 comparator; retain all country, currency and time-zone options. Use `Number.NaN` for an unchanged invalid conversation timestamp result.
+- Add punctuation/adversarial-input and regional-order regressions. Public exports, peer ranges, styling and host contracts remain unchanged.
+
+Prepared metadata for the already merged reliability fixes; publication and consumer adoption are separate gates.
+
 ## 0.1.2 — 2026-11-15
 
 - Upgrade the matched development Vitest/coverage pair to 4.1.12 with a genuine lock, removing the vulnerable test-worker/mock dependency chain without overrides.
