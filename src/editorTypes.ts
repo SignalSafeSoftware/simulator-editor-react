@@ -1,11 +1,12 @@
-import type { SimulatorEntryPoint } from "@signalsafe/simulator-core/devicePayload";
+import type {
+  SimulatorEntryPoint,
+  SimulatorContact,
+} from "@signalsafe/simulator-core/devicePayload";
 import type { PhotoNavigation } from "@signalsafe/simulator-react/apps/photos/Photos";
-import type { Photo } from "@signalsafe/simulator-core/apps/contracts";
+import type { Photo, Secret } from "@signalsafe/simulator-core/apps/contracts";
 import type { VaultNavigation } from "@signalsafe/simulator-react/apps/vault/Vault";
-import type { Secret } from "@signalsafe/simulator-core/apps/contracts";
 import type { HomePageId } from "./simulatorHomeContent.js";
 import type { ReactNode } from "react";
-import type { SimulatorContact } from "@signalsafe/simulator-core/devicePayload";
 export type SimulatorEditorSection =
   | "entry_point"
   | "messages"

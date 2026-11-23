@@ -1,4 +1,4 @@
-import { useContext, useEffect, useId, useRef, useState } from "react";
+import { useContext, useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { ChevronRight, ChevronDown, Plus } from "lucide-react";
 import {
   SimulatorCollectionContext,
@@ -62,6 +62,33 @@ export function SimulatorCollectionTree({
       return next;
     });
   }
+  function keyboardTarget(
+    event: KeyboardEvent,
+    visible: HTMLElement[],
+    index: number,
+    node: SimulatorTreeNode,
+    parent: string | undefined,
+    group: boolean,
+    open: boolean,
+  ): HTMLElement | null | undefined {
+    const positions: Readonly<Record<string, number>> = {
+      ArrowDown: index + 1,
+      ArrowUp: index - 1,
+      Home: 0,
+      End: visible.length - 1,
+    };
+    const position = positions[event.key];
+    if (position !== undefined) return visible[position];
+    if (event.key === "ArrowRight") {
+      if (group && !open) toggle(node.id);
+      else if (group) return visible[index + 1];
+    } else if (event.key === "ArrowLeft") {
+      if (group && open) toggle(node.id);
+      else return visible.find((item) => item.dataset.nodeId === parent);
+    } else if (event.key === "Enter" || event.key === " ") onSelect(node.id);
+    else return null;
+    return undefined;
+  }
   function row(node: SimulatorTreeNode, parent?: string) {
     const open = expanded.has(node.id);
     const group = node.children !== undefined;
@@ -89,19 +116,8 @@ export function SimulatorCollectionTree({
               ...(root.current?.querySelectorAll<HTMLElement>('[role="treeitem"]') ?? []),
             ];
             const index = visible.indexOf(event.currentTarget);
-            let target: HTMLElement | undefined;
-            if (event.key === "ArrowDown") target = visible[index + 1];
-            else if (event.key === "ArrowUp") target = visible[index - 1];
-            else if (event.key === "Home") target = visible[0];
-            else if (event.key === "End") target = visible.at(-1);
-            else if (event.key === "ArrowRight") {
-              if (group && !open) toggle(node.id);
-              else if (group) target = visible[index + 1];
-            } else if (event.key === "ArrowLeft") {
-              if (group && open) toggle(node.id);
-              else target = visible.find((item) => item.dataset.nodeId === parent);
-            } else if (event.key === "Enter" || event.key === " ") onSelect(node.id);
-            else return;
+            const target = keyboardTarget(event, visible, index, node, parent, group, open);
+            if (target === null) return;
             event.preventDefault();
             if (target) {
               target.focus();
@@ -156,26 +172,24 @@ export function SimulatorCollectionTree({
           </div>
         </div>
         {group && open && (
-          <>
-            {/* oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- Nested ARIA trees require a group list, not a fieldset. */}
-            <ul id={`${treeId}-${node.id}`} role="group" className="list-unstyled m-0">
+          <fieldset
+            id={`${treeId}-${node.id}`}
+            className="border-0 p-0 m-0"
+            style={{ minWidth: 0 }}
+          >
+            <ul role="presentation" className="list-unstyled m-0">
               {node.children?.map((child) => row(child, node.id))}
             </ul>
-          </>
+          </fieldset>
         )}
       </li>
     );
   }
+  const defaultAddLabel =
+    title === "Conversations" ? "Add conversation" : "Add " + title.toLowerCase() + " item";
   return (
     <SimulatorCollectionOutlet>
-      <SimulatorEditorPanel
-        title={title}
-        addLabel={
-          addLabel ??
-          `Add ${title === "Conversations" ? "conversation" : `${title.toLowerCase()} item`}`
-        }
-        onAdd={onAdd}
-      >
+      <SimulatorEditorPanel title={title} addLabel={addLabel ?? defaultAddLabel} onAdd={onAdd}>
         <ul
           ref={root}
           role="tree"

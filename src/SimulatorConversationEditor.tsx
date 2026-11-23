@@ -16,11 +16,9 @@ export function SimulatorConversationEditor({
 }>) {
   const timestamp = conversationTime(value.messages);
   const missingDate = localDateTime(timestamp) === "";
-  const dateTime = missingDate
-    ? timestamp
-      ? `Date not set — ${timestamp}`
-      : ""
-    : displayDateTime(timestamp);
+  let dateTime: string;
+  if (missingDate) dateTime = timestamp ? `Date not set — ${timestamp}` : "";
+  else dateTime = displayDateTime(timestamp);
   return (
     <section aria-label="Conversation editor">
       <label className="form-label d-block mb-3">

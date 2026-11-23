@@ -40,12 +40,12 @@ export function SimulatorSingleSelect({
       option.value.toLowerCase() === canonical.toLowerCase() ||
       option.label.toLowerCase() === search.toLowerCase(),
   );
-  const choices =
-    existing && search
-      ? [existing, ...matches.filter((option) => option.value !== existing.value)]
-      : search && allowCreate
-        ? [{ value: canonical, label: `Add “${search}”` }, ...matches]
-        : matches;
+  const creation =
+    search && allowCreate ? { value: canonical, label: `Add “${search}”` } : undefined;
+  let choices = matches;
+  if (existing && search)
+    choices = [existing, ...matches.filter((option) => option.value !== existing.value)];
+  else if (creation) choices = [creation, ...matches];
   function commit(next: string) {
     input.current?.focus();
     setQuery(null);
@@ -53,7 +53,8 @@ export function SimulatorSingleSelect({
     if (next !== value) onChange(next);
   }
   function commitQuery() {
-    if (search && (existing || allowCreate)) commit(existing?.value ?? canonical);
+    const selected = existing ?? creation;
+    if (search && selected) commit(selected.value);
     else {
       setQuery(null);
       setOpen(false);

@@ -29,21 +29,25 @@ export function SimulatorHomeSectionEditor({
   const parsed = homeContentSchema.safeParse({ [page]: value });
   if (!parsed.success)
     return <p role="alert">Repair invalid {page} content in the JSON editor before editing.</p>;
-  return page === "settings" ? (
-    <div className="graph-editor-root">
-      <SimulatorHomeSettingsEditor value={parsed.data.settings} onChange={onChange} />
-    </div>
-  ) : page === "vault" ? (
-    <SimulatorVaultContentEditor
-      onNavigate={onVaultNavigate}
-      previewDraft={vaultDraft}
-      onPreviewDraftChange={onVaultDraftChange}
-      selectedFolder={selectedVaultFolder}
-      selectedId={selectedVaultId}
-      value={parsed.data.vault}
-      onChange={onChange}
-    />
-  ) : (
+  if (page === "settings")
+    return (
+      <div className="graph-editor-root">
+        <SimulatorHomeSettingsEditor value={parsed.data.settings} onChange={onChange} />
+      </div>
+    );
+  if (page === "vault")
+    return (
+      <SimulatorVaultContentEditor
+        onNavigate={onVaultNavigate}
+        previewDraft={vaultDraft}
+        onPreviewDraftChange={onVaultDraftChange}
+        selectedFolder={selectedVaultFolder}
+        selectedId={selectedVaultId}
+        value={parsed.data.vault}
+        onChange={onChange}
+      />
+    );
+  return (
     <SimulatorPhotosContentEditor
       selectedId={photos?.selection?.id}
       onSelect={photos?.navigate}

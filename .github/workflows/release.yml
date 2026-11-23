@@ -22,7 +22,7 @@ jobs:
       - run: npm run test:coverage
       - run: npm run build
       - run: npm run smoke:package
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: release-package
           path: |
@@ -42,7 +42,7 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           name: release-package
       - uses: actions/setup-node@v7

@@ -26,9 +26,10 @@ export function SimulatorPhotoMetadataFields({
             value={value[key] ?? ""}
             onChange={(e) => {
               const number = e.target.valueAsNumber;
+              const coordinate = Number.isFinite(number) ? number : value[key];
               onChange({
                 ...value,
-                [key]: e.target.value === "" ? null : Number.isFinite(number) ? number : value[key],
+                [key]: e.target.value === "" ? null : coordinate,
               });
             }}
           />

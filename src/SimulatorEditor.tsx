@@ -11,7 +11,7 @@ import { useSimulatorVaultSelection } from "./useSimulatorVaultSelection.js";
 import { simulatorSectionIcons } from "./simulatorSectionIcons.js";
 import { useSimulatorEditorValidity } from "./useSimulatorEditorValidity.js";
 import { SimulatorCollectionContext } from "./SimulatorCollectionOutlet.js";
-import { useCallback, useId, useState } from "react";
+import { useCallback, useId, useMemo, useState } from "react";
 import { SimulatorEditorPanel } from "./SimulatorEditorPanel.js";
 import { SimulatorSectionEditor } from "./SimulatorSectionEditor.js";
 import type {
@@ -107,20 +107,23 @@ export function SimulatorEditor({
     ? (["properties", "simulator", "json"] as const)
     : (["simulator", "json"] as const);
   const selected = sections.find((item) => item.key === section) ?? sections[0];
+  const activeGroup =
+    collectionSelection?.section === section ? collectionSelection.group : undefined;
+  const collectionDisabled = disabled || Boolean(jsonError);
+  const collectionContext = useMemo(
+    () =>
+      collectionTarget
+        ? {
+            target: collectionTarget,
+            activeGroup,
+            selectGroup: selectCollectionGroup,
+            disabled: collectionDisabled,
+          }
+        : null,
+    [collectionTarget, activeGroup, selectCollectionGroup, collectionDisabled],
+  );
   return (
-    <SimulatorCollectionContext.Provider
-      value={
-        collectionTarget
-          ? {
-              target: collectionTarget,
-              activeGroup:
-                collectionSelection?.section === section ? collectionSelection.group : undefined,
-              selectGroup: selectCollectionGroup,
-              disabled: disabled || Boolean(jsonError),
-            }
-          : null
-      }
-    >
+    <SimulatorCollectionContext.Provider value={collectionContext}>
       <div className="row g-3">
         {vault.vaultDraft && (
           <p className="col-12 text-danger mb-0" role="alert">
