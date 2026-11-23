@@ -10,6 +10,11 @@ export function SimulatorMessageFields({
   contactNumbers: readonly string[];
   onChange: (next: unknown) => void;
 }>) {
+  let sender = "";
+  if (contentObject(item)) {
+    if (typeof item.sender_number === "string") sender = item.sender_number;
+    else if (item.from === "them") sender = contactNumbers[0] ?? "";
+  }
   return (
     <>
       {contentObject(item) && (
@@ -18,13 +23,7 @@ export function SimulatorMessageFields({
           <select
             aria-label="Sender"
             className="form-select"
-            value={
-              typeof item.sender_number === "string"
-                ? item.sender_number
-                : item.from === "them"
-                  ? (contactNumbers[0] ?? "")
-                  : ""
-            }
+            value={sender}
             onChange={(event) =>
               onChange({ ...item, from: "them", sender_number: event.target.value })
             }

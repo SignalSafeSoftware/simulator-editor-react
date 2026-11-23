@@ -30,12 +30,9 @@ export function useSimulatorPhotoSelection(
     homeContentSchema.safeParse({ photos: sections.find((item) => item.key === "photos")?.value });
   const navigate = (id: string | undefined) => {
     const parsed = readPhotos();
+    const items = parsed.success ? parsed.data.photos.items : [];
     const photo =
-      id === undefined
-        ? null
-        : photoSchema.safeParse(
-            parsed.success ? parsed.data.photos.items.find((item) => item.id === id) : undefined,
-          );
+      id === undefined ? null : photoSchema.safeParse(items.find((item) => item.id === id));
     if (photo !== null && !photo.success) return;
     activate("photos");
     highlight("photos");

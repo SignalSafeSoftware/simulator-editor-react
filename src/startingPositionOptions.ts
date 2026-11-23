@@ -23,6 +23,25 @@ const label = (row: Record<string, unknown>, fallbackId: string): string => {
     if (typeof row[key] === "string" && row[key]) return row[key];
   return fallbackId;
 };
+const itemLabel = (row: Record<string, unknown>, id: string, kind: string, prefix: string) =>
+  simulatorRowLabel(
+    kind === "call"
+      ? [row.timestamp, row.type, label(row, id)]
+          .filter((part) => typeof part === "string" && part)
+          .join(" · ")
+      : prefix + label(row, id),
+  );
+const items = (
+  kind: "conversation" | "contact" | "call" | "email" | "photo" | "vault-entry",
+  value: unknown,
+  prefix = "",
+) =>
+  records(value).flatMap((row): StartingPositionOption[] =>
+    typeof row.id === "string" && row.id
+      ? [{ label: itemLabel(row, row.id, kind, prefix), target: { kind, id: row.id } }]
+      : [],
+  );
+
 /** Stable ids distinguish records even when their visible names are identical. */
 export function startingPositionOptions(
   sections: readonly SimulatorEditorSectionValue[],
@@ -31,24 +50,6 @@ export function startingPositionOptions(
 ): StartingPositionOption[] {
   screen = startingScreenCollection(app, screen);
   const section = (key: string) => sections.find((item) => item.key === key)?.value;
-  const itemLabel = (row: Record<string, unknown>, id: string, kind: string, prefix: string) =>
-    simulatorRowLabel(
-      kind === "call"
-        ? [row.timestamp, row.type, label(row, id)]
-            .filter((part) => typeof part === "string" && part)
-            .join(" · ")
-        : prefix + label(row, id),
-    );
-  const items = (
-    kind: "conversation" | "contact" | "call" | "email" | "photo" | "vault-entry",
-    value: unknown,
-    prefix = "",
-  ) =>
-    records(value).flatMap((row): StartingPositionOption[] =>
-      typeof row.id === "string" && row.id
-        ? [{ label: itemLabel(row, row.id, kind, prefix), target: { kind, id: row.id } }]
-        : [],
-    );
   if (app === "messages" && screen === "threads") return items("conversation", section("messages"));
   if (app === "phone" && screen === "contacts") return items("contact", section("contacts"));
   if (app === "phone" && screen === "history") {
@@ -60,8 +61,9 @@ export function startingPositionOptions(
     return contentObject(email) ? items("email", email.messages) : [];
   }
   if (app !== "home" || screen !== "home") return [];
-  const vault = section("vault");
-  const photos = section("photos");
+  return homeOptions(section("vault"), section("photos"));
+}
+function homeOptions(vault: unknown, photos: unknown): StartingPositionOption[] {
   const folders = contentObject(vault) && Array.isArray(vault.folders) ? vault.folders : [];
   return [
     { label: "Vault — all folders", target: { kind: "vault-folder", folder: null } },

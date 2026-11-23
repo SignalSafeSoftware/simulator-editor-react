@@ -40,14 +40,12 @@ export function SimulatorDateTimeField({
   const validTime = /^(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/u.test(draft.time);
   function update(date: string, time: string) {
     const valid = /^(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/u.test(time);
-    const parsed =
-      date && valid ? new Date(`${date}T${time}${storage === "local" ? "Z" : ""}`) : undefined;
-    const next =
-      parsed && Number.isFinite(parsed.getTime())
-        ? storage === "local"
-          ? `${date}T${time}`
-          : parsed.toISOString()
-        : undefined;
+    const zone = storage === "local" ? "Z" : "";
+    const parsed = date && valid ? new Date(`${date}T${time}${zone}`) : undefined;
+    let next: string | undefined;
+    if (parsed && Number.isFinite(parsed.getTime())) {
+      next = storage === "local" ? `${date}T${time}` : parsed.toISOString();
+    }
     setDraft({ source: next ?? "", date, time });
     onChange(next ?? "");
   }

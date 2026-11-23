@@ -29,12 +29,9 @@ function containsUrl(body: string, href: string): boolean {
 /** Convert valid legacy metadata once; preserve unrecognized data for JSON repair. */
 function messageBody(value: Record<string, unknown>): Record<string, unknown> {
   if (!Array.isArray(value.links) || !value.links.every(isEmailLink)) return value;
-  let body =
-    typeof value.body === "string"
-      ? value.body
-      : typeof value.snippet === "string"
-        ? value.snippet
-        : "";
+  let body = "";
+  if (typeof value.body === "string") body = value.body;
+  else if (typeof value.snippet === "string") body = value.snippet;
   for (const link of value.links) {
     const parts = [...new Set([link.text.trim(), link.title?.trim() ?? ""])].filter(
       (part) => part && !body.includes(part),

@@ -22,6 +22,23 @@ export function SimulatorContactsEditor({
   const rows = Array.isArray(value) ? value.filter(contentObject) : [];
   const [selected, setSelected] = useState<string>();
   const active = rows.find((item, index) => contactKey(item, index) === selected);
+  function renderDetails() {
+    if (active)
+      return (
+        <SimulatorContactEndpointsEditor
+          key={contactKey(active, rows.indexOf(active))}
+          value={active}
+          onChange={(next) => onChange(rows.map((item) => (item === active ? next : item)))}
+        />
+      );
+    if (!layout)
+      return ["Phone numbers", "Email addresses", "Postal addresses"].map((title) => (
+        <SimulatorEditorPanel key={title} title={title}>
+          {null}
+        </SimulatorEditorPanel>
+      ));
+    return null;
+  }
   return (
     <section className="graph-editor-root" aria-label="Contacts editor">
       <SimulatorRecordList
@@ -40,19 +57,7 @@ export function SimulatorContactsEditor({
         )}
       />
       <SimulatorCollectionContext.Provider value={null}>
-        {active ? (
-          <SimulatorContactEndpointsEditor
-            key={contactKey(active, rows.indexOf(active))}
-            value={active}
-            onChange={(next) => onChange(rows.map((item) => (item === active ? next : item)))}
-          />
-        ) : !layout ? (
-          ["Phone numbers", "Email addresses", "Postal addresses"].map((title) => (
-            <SimulatorEditorPanel key={title} title={title}>
-              {null}
-            </SimulatorEditorPanel>
-          ))
-        ) : null}
+        {renderDetails()}
       </SimulatorCollectionContext.Provider>
     </section>
   );

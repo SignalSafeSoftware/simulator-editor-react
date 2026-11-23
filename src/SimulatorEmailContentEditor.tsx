@@ -55,6 +55,38 @@ export function SimulatorEmailContentEditor({
     update([...rows, item]);
     setSelected(`email:${item.id}`);
   }
+  function renderDetails() {
+    if (active)
+      return (
+        <SimulatorEditorPanel title="Email">
+          <div className="graph-editor-card__body">
+            <SimulatorEmailFields
+              item={active}
+              folders={folders}
+              update={(next) => update(rows.map((row) => (row.id === active.id ? next : row)))}
+            />
+          </div>
+        </SimulatorEditorPanel>
+      );
+    if (folder)
+      return (
+        <SimulatorEditorPanel title={folder.label}>
+          <div className="graph-editor-card__body">
+            <p>
+              {
+                rows.filter(
+                  (row) =>
+                    simulatorEmailFolder(row.folder_id).toLowerCase() ===
+                    folder.value.toLowerCase(),
+                ).length
+              }{" "}
+              emails in {folder.label}. Select an email to edit it, or use + to add one.
+            </p>
+          </div>
+        </SimulatorEditorPanel>
+      );
+    return null;
+  }
   return (
     <div className="graph-editor-root">
       <SimulatorCollectionTree
@@ -74,32 +106,7 @@ export function SimulatorEmailContentEditor({
           if (selected === id) setSelected(`folder:${item?.folder_id ?? "inbox"}`);
         }}
       />
-      {active ? (
-        <SimulatorEditorPanel title="Email">
-          <div className="graph-editor-card__body">
-            <SimulatorEmailFields
-              item={active}
-              folders={folders}
-              update={(next) => update(rows.map((row) => (row.id === active.id ? next : row)))}
-            />
-          </div>
-        </SimulatorEditorPanel>
-      ) : folder ? (
-        <SimulatorEditorPanel title={folder.label}>
-          <div className="graph-editor-card__body">
-            <p>
-              {
-                rows.filter(
-                  (row) =>
-                    simulatorEmailFolder(row.folder_id).toLowerCase() ===
-                    folder.value.toLowerCase(),
-                ).length
-              }{" "}
-              emails in {folder.label}. Select an email to edit it, or use + to add one.
-            </p>
-          </div>
-        </SimulatorEditorPanel>
-      ) : null}
+      {renderDetails()}
     </div>
   );
 }

@@ -119,12 +119,11 @@ export function SimulatorStartingScreen({
           ]}
           onChange={(next) => {
             const chosen = options.find((item) => JSON.stringify(item.target) === next);
-            const selectedScreen =
-              chosen?.target.kind === "conversation"
-                ? SimulatorMessagesScreenId.ThreadDetail
-                : chosen?.target.kind === "email"
-                  ? SimulatorEmailScreenId.Detail
-                  : screen;
+            let selectedScreen = screen;
+            if (chosen?.target.kind === "conversation")
+              selectedScreen = SimulatorMessagesScreenId.ThreadDetail;
+            else if (chosen?.target.kind === "email")
+              selectedScreen = SimulatorEmailScreenId.Detail;
             onChange(
               chosen
                 ? { ...entry, screen: selectedScreen, target: chosen.target }

@@ -88,8 +88,8 @@ export function SimulatorConversationsEditor({
         nodes={nodes}
         selectedId={message && active ? JSON.stringify([active.id, message]) : selected}
         onSelect={(id) => {
-          const parent = value.find((item) => item.id === id);
-          if (parent) select(id);
+          const isParent = value.some((item) => item.id === id);
+          if (isParent) select(id);
           else {
             const pair: unknown = JSON.parse(id);
             if (Array.isArray(pair) && typeof pair[0] === "string" && typeof pair[1] === "string")
@@ -106,8 +106,8 @@ export function SimulatorConversationsEditor({
         }}
         onAddChild={addMessage}
         onRemove={(id) => {
-          const parent = value.find((item) => item.id === id);
-          if (parent) {
+          const isParent = value.some((item) => item.id === id);
+          if (isParent) {
             const remaining = value.filter((item) => item.id !== id);
             onChange(remaining);
             if (selected === id) select(remaining[0]?.id ?? "");

@@ -63,12 +63,12 @@ export function SimulatorContactEndpointsEditor({
               [kind]: details[kind].map((row, i) => (i === index ? { ...row, ...patch } : row)),
             });
           const address = postalAddressFields(endpoint);
-          const label =
-            kind === "phones"
-              ? "Phone number"
-              : kind === "emails"
-                ? "Email address"
-                : "Postal address";
+          const labels = {
+            phones: { field: "Phone number", preferred: "phone" },
+            emails: { field: "Email address", preferred: "email" },
+            addresses: { field: "Postal address", preferred: "address" },
+          };
+          const label = labels[kind].field;
           return (
             <>
               <label className="form-label d-block mb-3">
@@ -137,9 +137,7 @@ export function SimulatorContactEndpointsEditor({
                     })
                   }
                 />
-                <span className="form-check-label">
-                  Preferred {kind === "phones" ? "phone" : kind === "emails" ? "email" : "address"}
-                </span>
+                <span className="form-check-label">Preferred {labels[kind].preferred}</span>
               </label>
             </>
           );

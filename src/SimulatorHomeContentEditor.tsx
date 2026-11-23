@@ -20,7 +20,7 @@ export function SimulatorHomeContentEditor({
   useEffect(() => {
     if (selectedPage) setPage(selectedPage);
   }, [selectedPage]);
-  let data;
+  let data: ReturnType<typeof readHomeContent>;
   try {
     data = readHomeContent(value);
   } catch {
@@ -28,6 +28,28 @@ export function SimulatorHomeContentEditor({
       <p role="alert">
         Repair invalid Home content in the JSON editor before editing Settings, Vault or Photos.
       </p>
+    );
+  }
+  function renderDetails() {
+    if (page === "settings")
+      return (
+        <SimulatorHomeSettingsEditor
+          value={data.settings}
+          onChange={(settings) => onChange({ ...data, settings })}
+        />
+      );
+    if (page === "vault")
+      return (
+        <SimulatorVaultContentEditor
+          value={data.vault}
+          onChange={(vault) => onChange({ ...data, vault })}
+        />
+      );
+    return (
+      <SimulatorPhotosContentEditor
+        value={data.photos}
+        onChange={(photos) => onChange({ ...data, photos })}
+      />
     );
   }
   return (
@@ -53,22 +75,7 @@ export function SimulatorHomeContentEditor({
           </nav>
         </SimulatorEditorPanel>
       </SimulatorCollectionOutlet>
-      {page === "settings" ? (
-        <SimulatorHomeSettingsEditor
-          value={data.settings}
-          onChange={(settings) => onChange({ ...data, settings })}
-        />
-      ) : page === "vault" ? (
-        <SimulatorVaultContentEditor
-          value={data.vault}
-          onChange={(vault) => onChange({ ...data, vault })}
-        />
-      ) : (
-        <SimulatorPhotosContentEditor
-          value={data.photos}
-          onChange={(photos) => onChange({ ...data, photos })}
-        />
-      )}
+      {renderDetails()}
     </div>
   );
 }

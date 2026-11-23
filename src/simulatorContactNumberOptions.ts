@@ -12,11 +12,14 @@ export function contactNumberOptions(
   const options = new Map<string, ContactNumberOption>();
   const add = (number: string, name: string, label = "") => {
     const trimmed = number.trim();
-    if (trimmed && !options.has(trimmed))
+    if (trimmed && !options.has(trimmed)) {
+      const prefix = name ? name + " — " : "";
+      const suffix = label ? " (" + label + ")" : "";
       options.set(trimmed, {
         number: trimmed,
-        label: `${name ? `${name} — ` : ""}${trimmed}${label ? ` (${label})` : ""}`,
+        label: `${prefix}${trimmed}${suffix}`,
       });
+    }
   };
   for (const contact of contacts) {
     for (const phone of contact.phone_numbers ?? [])

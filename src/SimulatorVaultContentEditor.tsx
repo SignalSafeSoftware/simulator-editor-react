@@ -31,13 +31,11 @@ export function SimulatorVaultContentEditor({
     ? [...value.items.filter((item) => item.id !== previewDraft.id), previewDraft]
     : value.items;
   const folders = [...new Set([...value.folders, ...items.map((item) => item.folder)])];
-  const [selected, setSelected] = useState(
-    selectedId && items.some((item) => item.id === selectedId)
-      ? `entry:${selectedId}`
-      : selectedFolder === null
-        ? "root"
-        : folderKey(selectedFolder ?? folders[0] ?? DEFAULT_VAULT_FOLDER),
-  );
+  let initialSelection = folderKey(selectedFolder ?? folders[0] ?? DEFAULT_VAULT_FOLDER);
+  if (selectedId && items.some((item) => item.id === selectedId))
+    initialSelection = `entry:${selectedId}`;
+  else if (selectedFolder === null) initialSelection = "root";
+  const [selected, setSelected] = useState(initialSelection);
   const [error, setError] = useState("");
   const active = items.find((item) => `entry:${item.id}` === selected);
   const folder = folders.find((folder) => folderKey(folder) === selected);
@@ -91,6 +89,59 @@ export function SimulatorVaultContentEditor({
     setSelected(folderKey(name));
     setError("");
   }
+  function renderDetails() {
+    if (active)
+      return (
+        <SimulatorEditorPanel title="Vault entry">
+          <div className="graph-editor-card__body">
+            <SimulatorVaultEntryFields
+              item={active}
+              folders={folders}
+              onChange={(next) =>
+                active.id === previewDraft?.id
+                  ? onPreviewDraftChange?.(next)
+                  : onChange({
+                      ...value,
+                      folders: [...new Set([...folders, next.folder])],
+                      items: value.items.map((item) => (item.id === active.id ? next : item)),
+                    })
+              }
+            />
+          </div>
+        </SimulatorEditorPanel>
+      );
+    if (folder)
+      return (
+        <SimulatorEditorPanel title="Vault folder">
+          <div className="graph-editor-card__body">
+            <label className="form-label d-block mb-3">
+              Folder name{" "}
+              <input
+                key={folder}
+                className="form-control"
+                defaultValue={folder}
+                maxLength={200}
+                onBlur={(event) => renameFolder(folder, event.target.value)}
+              />
+            </label>
+            <p>
+              {items.filter((item) => item.folder === folder).length} entries. Select an entry to
+              edit it, or use + beside the folder to add one.
+            </p>
+            {error && (
+              <p role="alert" className="text-danger">
+                {error}
+              </p>
+            )}
+          </div>
+        </SimulatorEditorPanel>
+      );
+    return (
+      <SimulatorEditorPanel title="Vault">
+        <div className="graph-editor-card__body">Select a folder or entry to edit it.</div>
+      </SimulatorEditorPanel>
+    );
+  }
   return (
     <div className="graph-editor-root">
       <SimulatorCollectionTree
@@ -142,53 +193,7 @@ export function SimulatorVaultContentEditor({
           }
         }}
       />
-      {active ? (
-        <SimulatorEditorPanel title="Vault entry">
-          <div className="graph-editor-card__body">
-            <SimulatorVaultEntryFields
-              item={active}
-              folders={folders}
-              onChange={(next) =>
-                active.id === previewDraft?.id
-                  ? onPreviewDraftChange?.(next)
-                  : onChange({
-                      ...value,
-                      folders: [...new Set([...folders, next.folder])],
-                      items: value.items.map((item) => (item.id === active.id ? next : item)),
-                    })
-              }
-            />
-          </div>
-        </SimulatorEditorPanel>
-      ) : folder ? (
-        <SimulatorEditorPanel title="Vault folder">
-          <div className="graph-editor-card__body">
-            <label className="form-label d-block mb-3">
-              Folder name{" "}
-              <input
-                key={folder}
-                className="form-control"
-                defaultValue={folder}
-                maxLength={200}
-                onBlur={(event) => renameFolder(folder, event.target.value)}
-              />
-            </label>
-            <p>
-              {items.filter((item) => item.folder === folder).length} entries. Select an entry to
-              edit it, or use + beside the folder to add one.
-            </p>
-            {error && (
-              <p role="alert" className="text-danger">
-                {error}
-              </p>
-            )}
-          </div>
-        </SimulatorEditorPanel>
-      ) : (
-        <SimulatorEditorPanel title="Vault">
-          <div className="graph-editor-card__body">Select a folder or entry to edit it.</div>
-        </SimulatorEditorPanel>
-      )}
+      {renderDetails()}
     </div>
   );
 }

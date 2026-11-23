@@ -1,4 +1,10 @@
 import type { SimulatorEditorView } from "./editorTypes.js";
+const TAB_LABELS: Readonly<Record<SimulatorEditorView, string>> = {
+  properties: "Properties",
+  simulator: "Preview",
+  json: "JSON",
+};
+
 export function SimulatorEditorTabs({
   tabs,
   tab,
@@ -28,15 +34,12 @@ export function SimulatorEditorTabs({
           onKeyDown={(event) => {
             if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key) || disabled) return;
             event.preventDefault();
-            const index = tabs.findIndex((item) => item === tab);
-            const next =
-              tabs[
-                event.key === "Home"
-                  ? 0
-                  : event.key === "End"
-                    ? tabs.length - 1
-                    : (index + (event.key === "ArrowLeft" ? -1 : 1) + tabs.length) % tabs.length
-              ]!;
+            const index = tabs.indexOf(tab);
+            let nextIndex =
+              (index + (event.key === "ArrowLeft" ? -1 : 1) + tabs.length) % tabs.length;
+            if (event.key === "Home") nextIndex = 0;
+            else if (event.key === "End") nextIndex = tabs.length - 1;
+            const next = tabs[nextIndex]!;
             onChange(next);
             globalThis.document.getElementById(`${viewId}-${next}-tab`)?.focus();
           }}
@@ -44,7 +47,7 @@ export function SimulatorEditorTabs({
             onChange(item);
           }}
         >
-          {item === "properties" ? "Properties" : item === "simulator" ? "Preview" : "JSON"}
+          {TAB_LABELS[item]}
         </button>
       ))}
     </div>

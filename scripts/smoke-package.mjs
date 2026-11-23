@@ -1,7 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { mkdtempSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { resolve, join } from "node:path";
+import { resolve, join, dirname } from "node:path";
 import { pathToFileURL, fileURLToPath } from "node:url";
 import assert from "node:assert/strict";
 const root = fileURLToPath(new URL("..", import.meta.url));
@@ -12,13 +12,24 @@ function developmentDependency(name) {
   assert(!spec.startsWith("file:"), `Published dependency required: ${name}`);
   return spec;
 }
+// Resolve npm from the selected Node installation, never from a writable PATH entry.
+const npmCli = [
+  resolve(dirname(process.execPath), "../lib/node_modules/npm/bin/npm-cli.js"),
+  resolve(dirname(process.execPath), "node_modules/npm/bin/npm-cli.js"),
+].find(existsSync);
+assert(npmCli, "The selected Node installation must include npm.");
 const target = mkdtempSync(join(tmpdir(), "simulator-editor-package-"));
 const packed = JSON.parse(
-  execFileSync("npm", ["pack", "--ignore-scripts", "--json", "--pack-destination", target], {
-    cwd: root,
-    encoding: "utf8",
-  }),
+  execFileSync(
+    process.execPath,
+    [npmCli, "pack", "--ignore-scripts", "--json", "--pack-destination", target],
+    {
+      cwd: root,
+      encoding: "utf8",
+    },
+  ),
 )[0];
+const runtimePaths = [];
 for (const [subpath, entry] of Object.entries(pkg.exports)) {
   const runtime = typeof entry === "string" ? entry : entry.import;
   assert(
@@ -27,9 +38,10 @@ for (const [subpath, entry] of Object.entries(pkg.exports)) {
   );
   if (typeof entry === "object") {
     assert(existsSync(resolve(root, entry.types)), `Missing declarations ${subpath}`);
-    await import(pathToFileURL(resolve(root, runtime)).href);
+    runtimePaths.push(pathToFileURL(resolve(root, runtime)).href);
   }
 }
+await Promise.all(runtimePaths.map((runtime) => import(runtime)));
 writeFileSync(
   join(target, "package.json"),
   JSON.stringify({
@@ -62,10 +74,14 @@ writeFileSync(
     },
   }),
 );
-execFileSync("npm", ["install", "--ignore-scripts", "--no-audit", "--no-fund", "--prefer-online"], {
-  cwd: target,
-  stdio: "inherit",
-});
+execFileSync(
+  process.execPath,
+  [npmCli, "install", "--ignore-scripts", "--no-audit", "--no-fund", "--prefer-online"],
+  {
+    cwd: target,
+    stdio: "inherit",
+  },
+);
 writeFileSync(
   join(target, "smoke.mjs"),
   `import React from 'react';import {renderToString} from 'react-dom/server';

@@ -8,6 +8,8 @@ import { createSimulatorId } from "@signalsafe/simulator-core/apps/id";
 import { contentObject, SimulatorContentFields } from "./SimulatorContentFields.js";
 import { simulatorRowLabel } from "./simulatorRowLabel.js";
 
+const DETAIL_TITLES: Readonly<Record<string, string>> = { Contacts: "Contact", Emails: "Email" };
+
 export function SimulatorRecordList({
   title,
   value,
@@ -41,7 +43,7 @@ export function SimulatorRecordList({
   const id = useId();
   const layout = useContext(SimulatorCollectionContext);
   const activeKey =
-    layout && layout.activeGroup !== undefined && layout.activeGroup !== id ? undefined : expanded;
+    layout?.activeGroup !== undefined && layout.activeGroup !== id ? undefined : expanded;
   const selectGroup = layout?.selectGroup;
   useEffect(() => {
     if (selectedId !== undefined) selectGroup?.(id);
@@ -87,13 +89,14 @@ export function SimulatorRecordList({
             {rows.map((item, index) => {
               const key = typeof item.id === "string" ? item.id : String(index);
               const open = activeKey === key;
+              const activeClass = open ? " active" : "";
               const text = label(item) || `${title} ${index + 1}`;
               return (
                 <div
                   key={key}
                   className={
                     layout
-                      ? `list-group-item simulator-collection-item p-0${open ? " active" : ""}`
+                      ? `list-group-item simulator-collection-item p-0${activeClass}`
                       : "graph-editor-list__item"
                   }
                 >
@@ -102,7 +105,7 @@ export function SimulatorRecordList({
                       type="button"
                       className={
                         layout
-                          ? `list-group-item list-group-item-action simulator-collection-row flex-grow-1 border-0${open ? " active" : ""}`
+                          ? `list-group-item list-group-item-action simulator-collection-row flex-grow-1 border-0${activeClass}`
                           : "graph-editor-choice-toggle flex-grow-1"
                       }
                       aria-expanded={layout ? undefined : open}
@@ -149,9 +152,7 @@ export function SimulatorRecordList({
         </SimulatorEditorPanel>
       </SimulatorCollectionOutlet>
       {layout && active && (
-        <SimulatorEditorPanel
-          title={title === "Contacts" ? "Contact" : title === "Emails" ? "Email" : title}
-        >
+        <SimulatorEditorPanel title={DETAIL_TITLES[title] ?? title}>
           <div className="graph-editor-card__body">
             <SimulatorCollectionContext.Provider value={null}>
               {edit(active, activeIndex)}

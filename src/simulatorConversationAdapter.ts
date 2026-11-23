@@ -10,6 +10,7 @@ function matchingSummary(
   rows: unknown[],
   detail: Record<string, unknown>,
 ): Record<string, unknown> | undefined {
+  const singleton = rows.length === 1 ? rows[0] : undefined;
   const match =
     typeof detail.id === "string" && detail.id
       ? rows.find((row) => object(row) && row.id === detail.id)
@@ -18,7 +19,7 @@ function matchingSummary(
             object(row) &&
             typeof detail.sender_number === "string" &&
             row.contact_number === detail.sender_number,
-        ) ?? (rows.length === 1 ? rows[0] : undefined));
+        ) ?? singleton);
   return object(match) ? match : undefined;
 }
 /** Keep dated messages chronological and preserve stable ordering for ties and legacy values. */
@@ -31,7 +32,8 @@ export function sortConversationMessages(messages: readonly unknown[]): unknown[
   return [...messages].sort((left, right) => {
     const a = timestamp(left);
     const b = timestamp(right);
-    return a === b ? 0 : a < b ? -1 : 1;
+    if (a === b) return 0;
+    return a < b ? -1 : 1;
   });
 }
 export function conversationTime(messages: readonly unknown[]): string {
@@ -43,13 +45,13 @@ export function conversationTime(messages: readonly unknown[]): string {
       Number.isFinite(Date.parse(text(message.timestamp))),
   );
   const latest = dated.length
-    ? dated[dated.length - 1]
+    ? dated.at(-1)
     : [...ordered].reverse().find((message) => object(message) && text(message.timestamp));
   return object(latest) ? text(latest.timestamp) : "";
 }
 /** Migrate a legacy conversation time once, without copying an existing message time. */
 export function conversationMessages(messages: readonly unknown[], legacyTime: unknown): unknown[] {
-  const latest = messages[messages.length - 1];
+  const latest = messages.at(-1);
   if (
     !object(latest) ||
     latest.timestamp !== undefined ||
@@ -108,15 +110,13 @@ export function writeSimulatorConversation(
   const detail = object(base.thread_detail) ? base.thread_detail : {};
   const rows: unknown[] = Array.isArray(base.threads) ? base.threads : [];
   const existing = matchingSummary(rows, detail);
-  const id =
-    typeof detail.id === "string" && detail.id
-      ? detail.id
-      : typeof existing?.id === "string" && existing.id
-        ? existing.id
-        : createSimulatorId();
+  let id: string;
+  if (typeof detail.id === "string" && detail.id) id = detail.id;
+  else if (typeof existing?.id === "string" && existing.id) id = existing.id;
+  else id = createSimulatorId();
   const messages = conversationMessages(edited.messages, edited.last_at);
   const lastAt = conversationTime(messages);
-  const latest: unknown = messages[messages.length - 1];
+  const latest: unknown = messages.at(-1);
   const snippet = object(latest) ? text(latest.text).replace(/\s+/gu, " ").trim() : "";
   const summary = {
     ...(object(existing) ? existing : {}),

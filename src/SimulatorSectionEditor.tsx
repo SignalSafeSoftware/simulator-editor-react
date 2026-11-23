@@ -57,65 +57,75 @@ export function SimulatorSectionEditor({
   onChange: (section: SimulatorEditorSection, value: unknown) => void;
   onSelectConversation: (id: string | undefined) => void;
 }>) {
-  return selected?.key === "messages" ? (
-    <SimulatorConversationsEditor
-      contacts={contacts}
-      onSelect={onSelectConversation}
-      selectedId={selectedConversationId}
-      value={parseConversations(selected.value)}
-      onChange={(value) => onChange("messages", value)}
-    />
-  ) : selected && ["contacts", "phone", "internet"].includes(selected.key) ? (
-    <SimulatorAdditionalContentEditor
-      key={selected.key}
-      section={selected.key}
-      selectedCallId={selectedCallId}
-      onSelectCall={onSelectCall}
-      onSelectContact={onSelectContact}
-      onSelectBrowserPage={onSelectBrowserPage}
-      value={selected.value}
-      onChange={(value) => onChange(selected.key, value)}
-    />
-  ) : selected?.key === "email" ? (
-    <SimulatorEmailContentEditor
-      selectedId={selectedEmailId}
-      onSelect={onSelectEmail}
-      value={selected.value}
-      onChange={(value) => onChange(selected.key, value)}
-    />
-  ) : selected?.key === "settings" || selected?.key === "vault" || selected?.key === "photos" ? (
-    <SimulatorHomeSectionEditor
-      key={
-        selected.key === "vault"
-          ? `${selected.key}:${vaultSelection?.revision ?? 0}`
-          : selected.key === "photos"
-            ? `${selected.key}:${photos?.selection?.revision ?? 0}`
-            : selected.key
-      }
-      photos={photos}
-      onVaultNavigate={onVaultNavigate}
-      vaultDraft={vaultDraft}
-      onVaultDraftChange={onVaultDraftChange}
-      selectedVaultFolder={vaultSelection?.folder}
-      selectedVaultId={vaultSelection?.id}
-      page={selected.key}
-      value={selected.value}
-      onChange={(value) => onChange(selected.key, value)}
-    />
-  ) : selected?.key === "home" ? (
-    <SimulatorHomeContentEditor
-      selectedPage={homePage}
-      onPageSelect={onHomePageSelect}
-      value={selected.value}
-      onChange={(value) => onChange("home", value)}
-    />
-  ) : selected?.key === "entry_point" ? (
-    <SimulatorStartingScreen
-      startingPageAction={startingPageAction}
-      value={selected.value}
-      sections={sections}
-      internet={internet}
-      onChange={(value) => onChange(selected.key, value)}
-    />
-  ) : null;
+  if (selected?.key === "messages")
+    return (
+      <SimulatorConversationsEditor
+        contacts={contacts}
+        onSelect={onSelectConversation}
+        selectedId={selectedConversationId}
+        value={parseConversations(selected.value)}
+        onChange={(value) => onChange("messages", value)}
+      />
+    );
+  if (selected && ["contacts", "phone", "internet"].includes(selected.key))
+    return (
+      <SimulatorAdditionalContentEditor
+        key={selected.key}
+        section={selected.key}
+        selectedCallId={selectedCallId}
+        onSelectCall={onSelectCall}
+        onSelectContact={onSelectContact}
+        onSelectBrowserPage={onSelectBrowserPage}
+        value={selected.value}
+        onChange={(value) => onChange(selected.key, value)}
+      />
+    );
+  if (selected?.key === "email")
+    return (
+      <SimulatorEmailContentEditor
+        selectedId={selectedEmailId}
+        onSelect={onSelectEmail}
+        value={selected.value}
+        onChange={(value) => onChange(selected.key, value)}
+      />
+    );
+  if (selected?.key === "settings" || selected?.key === "vault" || selected?.key === "photos") {
+    let key: string = selected.key;
+    if (selected.key === "vault") key = `${selected.key}:${vaultSelection?.revision ?? 0}`;
+    else if (selected.key === "photos") key = `${selected.key}:${photos?.selection?.revision ?? 0}`;
+    return (
+      <SimulatorHomeSectionEditor
+        key={key}
+        photos={photos}
+        onVaultNavigate={onVaultNavigate}
+        vaultDraft={vaultDraft}
+        onVaultDraftChange={onVaultDraftChange}
+        selectedVaultFolder={vaultSelection?.folder}
+        selectedVaultId={vaultSelection?.id}
+        page={selected.key}
+        value={selected.value}
+        onChange={(value) => onChange(selected.key, value)}
+      />
+    );
+  }
+  if (selected?.key === "home")
+    return (
+      <SimulatorHomeContentEditor
+        selectedPage={homePage}
+        onPageSelect={onHomePageSelect}
+        value={selected.value}
+        onChange={(value) => onChange("home", value)}
+      />
+    );
+  if (selected?.key === "entry_point")
+    return (
+      <SimulatorStartingScreen
+        startingPageAction={startingPageAction}
+        value={selected.value}
+        sections={sections}
+        internet={internet}
+        onChange={(value) => onChange(selected.key, value)}
+      />
+    );
+  return null;
 }

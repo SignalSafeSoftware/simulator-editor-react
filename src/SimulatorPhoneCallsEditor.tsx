@@ -47,10 +47,10 @@ export function SimulatorPhoneCallsEditor({
           {
             id: `group:${first.id}`,
             label: first.name || first.number || `Call group ${index + 1}`,
-            children: entries.map((call) => ({
-              id: `call:${call.id}`,
-              label: `${contentLabel(call.type)}${call.timestamp ? ` — ${call.timestamp}` : ""}`,
-            })),
+            children: entries.map((call) => {
+              const timestamp = call.timestamp ? " — " + call.timestamp : "";
+              return { id: `call:${call.id}`, label: `${contentLabel(call.type)}${timestamp}` };
+            }),
           },
         ]
       : [];
@@ -84,6 +84,32 @@ export function SimulatorPhoneCallsEditor({
     requested.current = call.id;
     onSelect?.(call.id);
   }
+  function renderDetails() {
+    if (active)
+      return (
+        <SimulatorEditorPanel title="Call">
+          <div className="graph-editor-card__body">
+            <SimulatorPhoneCallFields
+              item={{ ...active }}
+              change={(next) =>
+                update(calls.map((call) => (call.id === active.id ? { ...call, ...next } : call)))
+              }
+            />
+          </div>
+        </SimulatorEditorPanel>
+      );
+    if (group?.[0])
+      return (
+        <SimulatorEditorPanel title="Call group">
+          <div className="graph-editor-card__body">
+            <p>{group[0].name || group[0].number}</p>
+            <p>{group[0].number}</p>
+            <p>{group.length} calls. Select a call to edit its details.</p>
+          </div>
+        </SimulatorEditorPanel>
+      );
+    return null;
+  }
   return (
     <div className="graph-editor-root">
       <SimulatorCollectionTree
@@ -104,26 +130,7 @@ export function SimulatorPhoneCallsEditor({
           }
         }}
       />
-      {active ? (
-        <SimulatorEditorPanel title="Call">
-          <div className="graph-editor-card__body">
-            <SimulatorPhoneCallFields
-              item={{ ...active }}
-              change={(next) =>
-                update(calls.map((call) => (call.id === active.id ? { ...call, ...next } : call)))
-              }
-            />
-          </div>
-        </SimulatorEditorPanel>
-      ) : group?.[0] ? (
-        <SimulatorEditorPanel title="Call group">
-          <div className="graph-editor-card__body">
-            <p>{group[0].name || group[0].number}</p>
-            <p>{group[0].number}</p>
-            <p>{group.length} calls. Select a call to edit its details.</p>
-          </div>
-        </SimulatorEditorPanel>
-      ) : null}
+      {renderDetails()}
     </div>
   );
 }

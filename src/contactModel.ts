@@ -51,11 +51,10 @@ export function contactDetails(value: Record<string, unknown>): ContactFormDetai
   if (value.details !== undefined) return detailsSchema.parse(value.details);
   const id = text(value.id);
   const rows = (key: string, scalar: string, kind: string): ContactFormValue[] => {
-    const entries = Array.isArray(value[key])
-      ? value[key].filter(object)
-      : text(value[scalar])
-        ? [{ label: "", value: text(value[scalar]) }]
-        : [];
+    const source = value[key];
+    let entries: Record<string, unknown>[] = [];
+    if (Array.isArray(source)) entries = source.filter(object);
+    else if (text(value[scalar])) entries = [{ label: "", value: text(value[scalar]) }];
     return entries.map((row, index) => ({
       id: `${id}-${kind}-${index}`,
       label: text(row.label),

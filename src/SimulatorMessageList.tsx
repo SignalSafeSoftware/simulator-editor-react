@@ -1,3 +1,4 @@
+import { useSimulatorKeyedValues } from "./useSimulatorKeyedValues.js";
 import { SimulatorMessageFields } from "./SimulatorMessageFields.js";
 import { simulatorRowLabel } from "./simulatorRowLabel.js";
 import { SimulatorEditorPanel } from "./SimulatorEditorPanel.js";
@@ -17,13 +18,14 @@ export function SimulatorMessageList({
 }>) {
   const [expanded, setExpanded] = useState<number | null>(null);
   const id = useId();
+  const { entries, remember } = useSimulatorKeyedValues(value);
   return (
     <section className="graph-editor-root" aria-label="Message list">
       <SimulatorEditorPanel
         title="Messages"
         addLabel="Add message"
         onAdd={() => {
-          onChange([
+          const next = [
             ...value,
             {
               from: "them",
@@ -31,19 +33,21 @@ export function SimulatorMessageList({
               timestamp: "",
               ...(contactNumbers[0] ? { sender_number: contactNumbers[0] } : {}),
             },
-          ]);
+          ];
+          remember(next);
+          onChange(next);
           setExpanded(value.length);
         }}
       >
         <div className="graph-editor-list">
-          {value.map((item, index) => {
+          {entries.map(({ value: item, key }, index) => {
             const text =
               contentObject(item) && typeof item.text === "string" && item.text.trim()
                 ? item.text
                 : `Message ${index + 1}`;
             const open = expanded === index;
             return (
-              <div key={index} className="graph-editor-list__item">
+              <div key={key} className="graph-editor-list__item">
                 <div className="d-flex align-items-start justify-content-between gap-2">
                   <button
                     type="button"
@@ -66,14 +70,16 @@ export function SimulatorMessageList({
                       title="Remove message"
                       aria-label={`Remove message ${index + 1}`}
                       onClick={() => {
-                        onChange(value.filter((_, i) => i !== index));
-                        setExpanded((current) =>
-                          current === index
-                            ? null
-                            : current !== null && current > index
-                              ? current - 1
-                              : current,
+                        const next = value.filter((_, i) => i !== index);
+                        remember(
+                          next,
+                          entries.filter((_, i) => i !== index),
                         );
+                        onChange(next);
+                        setExpanded((current) => {
+                          if (current === index) return null;
+                          return current !== null && current > index ? current - 1 : current;
+                        });
                       }}
                     ></button>
                   </fieldset>
@@ -86,6 +92,12 @@ export function SimulatorMessageList({
                     onChange={(updated) => {
                       const sorted = sortConversationMessages(
                         value.map((entry, i) => (i === index ? updated : entry)),
+                      );
+                      remember(
+                        sorted,
+                        entries.map((entry, i) =>
+                          i === index ? { ...entry, value: updated } : entry,
+                        ),
                       );
                       onChange(sorted);
                       setExpanded(sorted.indexOf(updated));
