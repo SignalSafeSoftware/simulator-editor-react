@@ -1,5 +1,5 @@
 # Development dependencies
 
-The public simulator dependencies now use registry versions: core 0.7.2, React 0.21.2, device 0.21.4 in the example, and theme 0.13.4. Root peer ranges match the validated versions. Regenerate and commit npm lockfiles from real registry metadata; never fabricate integrity values.
+The root development lock and standalone example use public registry packages: core 0.7.3, React 0.22.0 and theme 0.13.5; the example also installs device 0.22.0 and editor 0.1.3. Root peer ranges retain support for the previously validated cohort. Regenerate and commit npm lockfiles from real registry metadata; never fabricate integrity values.
 
-The editor is released publicly as 0.1.1. The example uses that registry version; its legacy archive is removed. Public simulator packages are installed from npm. Packed smoke consumers prefer online metadata so a stale cache cannot hide newly published peer versions.
+Editor 0.1.3 is published and its public archive matches the reviewed release candidate. The example selects that registry version directly; no local archive or path alias is required. Packed smoke consumers prefer online metadata so a stale cache cannot hide newly published peer versions. See the [current state](current-state-summary.md) for the release receipt and verification scope.
