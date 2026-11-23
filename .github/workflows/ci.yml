@@ -22,3 +22,76 @@ jobs:
       - run: npm run test:coverage
       - run: npm run build
       - run: npm run smoke:package
+      - name: Normalize exact-SHA coverage
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import { execFileSync } from 'node:child_process';
+          import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
+          import path from 'node:path';
+          const root = realpathSync(process.cwd());
+          assert.equal(execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), process.env.GITHUB_SHA);
+          const reports = [["coverage/lcov.info", "."]];
+          for (const [filename, workspace] of reports) {
+            const original = readFileSync(filename, 'utf8').split('\n');
+            let sources = 0;
+            const normalized = original.map((line) => {
+              if (!line.startsWith('SF:')) return line;
+              const resolved = realpathSync(path.resolve(root, workspace, line.slice(3)));
+              const relative = path.relative(root, resolved);
+              assert.ok(relative && !relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative));
+              assert.ok(existsSync(resolved));
+              sources += 1;
+              return `SF:${relative.split(path.sep).join('/')}`;
+            });
+            assert.ok(sources > 0, `${filename} contains no source records`);
+            assert.deepEqual(normalized.filter((line) => !line.startsWith('SF:')), original.filter((line) => !line.startsWith('SF:')));
+            writeFileSync(filename, normalized.join('\n'));
+          }
+          mkdirSync('coverage', { recursive: true });
+          writeFileSync('coverage/source-revision.txt', `${process.env.GITHUB_SHA}\n`);
+          NODE
+      - name: Upload exact-SHA coverage
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-${{ github.sha }}
+          path: |
+            coverage/lcov.info
+            coverage/source-revision.txt
+          if-no-files-found: error
+          retention-days: 3
+
+  sonar:
+    name: SonarCloud coverage analysis
+    needs: verify
+    if: >-
+      github.ref_type != 'tag' &&
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    env:
+      SONAR_TOKEN: ${{ secrets.PACKAGES_SONAR_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - uses: actions/download-artifact@v8
+        with:
+          name: coverage-${{ github.sha }}
+          path: coverage
+      - name: Verify exact source revision and coverage reports
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -n "$SONAR_TOKEN"
+          test "$(cat coverage/source-revision.txt)" = "$GITHUB_SHA"
+      - name: Install locked dependencies for imported TypeScript analysis
+        run: npm ci --ignore-scripts
+      - name: SonarCloud scan
+        uses: SonarSource/sonarqube-scan-action@59202af334b4ba7b5db01b701b8e79f8b3bef0f4 # v8.5.0
+        with:
+          args: -Dsonar.qualitygate.wait=true
