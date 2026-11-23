@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { startTransition, Suspense, useState } from "react";
 import { act, fireEvent, render, renderHook, screen, within } from "@testing-library/react";
 import { expect, it } from "vitest";
 import { SimulatorContentFields } from "../src/SimulatorContentFields";
@@ -84,4 +84,60 @@ it("keeps a legacy message editor focused through chronological reordering and r
   fireEvent.click(screen.getByRole("button", { name: "Remove message 2" }));
   expect(screen.getByRole("textbox", { name: "Text" })).toBe(text);
   expect(text).toHaveValue("Edited");
+});
+
+it("does not commit identity allocation from a suspended transition", async () => {
+  const original = [{ text: "Original" }];
+  const pending = new Promise<never>(() => {});
+  function ConcurrentFields() {
+    const [document, change] = useState({ values: original, suspended: false });
+    const { entries, remember } = useSimulatorKeyedValues(document.values);
+    if (document.suspended) throw pending;
+    return (
+      <>
+        <button
+          onClick={() =>
+            startTransition(() => change({ values: [{ text: "Discarded" }], suspended: true }))
+          }
+        >
+          Suspend replacement
+        </button>
+        <button onClick={() => change({ values: original, suspended: false })}>
+          Cancel replacement
+        </button>
+        <button
+          onClick={() => {
+            const values = [...original, { text: "Added" }];
+            remember(values);
+            change({ values, suspended: false });
+          }}
+        >
+          Add committed row
+        </button>
+        <output aria-label="Committed identities">
+          {JSON.stringify(entries.map((entry) => entry.key))}
+        </output>
+      </>
+    );
+  }
+  render(
+    <Suspense fallback={<p>Loading replacement</p>}>
+      <ConcurrentFields />
+    </Suspense>,
+  );
+  const committed = screen.getByLabelText("Committed identities").textContent;
+  await act(async () =>
+    fireEvent.click(screen.getByRole("button", { name: "Suspend replacement" })),
+  );
+  expect(screen.queryByText("Loading replacement")).not.toBeInTheDocument();
+  expect(screen.getByLabelText("Committed identities").textContent).toBe(committed);
+  fireEvent.click(screen.getByRole("button", { name: "Cancel replacement" }));
+  expect(screen.getByLabelText("Committed identities").textContent).toBe(committed);
+  fireEvent.click(screen.getByRole("button", { name: "Add committed row" }));
+  const identities: unknown = JSON.parse(
+    screen.getByLabelText("Committed identities").textContent ?? "null",
+  );
+  if (!Array.isArray(identities) || identities.length !== 2 || typeof identities[1] !== "string")
+    throw new Error("Committed identities missing");
+  expect(identities[1].split(":").at(-1)).toBe("1");
 });

@@ -1,8 +1,17 @@
-import { useId, useRef } from "react";
+import { useId, useState } from "react";
 
 export interface KeyedSimulatorValue {
   readonly key: string;
   readonly value: unknown;
+}
+interface IdentitySnapshot {
+  readonly values: readonly unknown[];
+  readonly entries: readonly KeyedSimulatorValue[];
+}
+interface IdentityState {
+  readonly snapshot: IdentitySnapshot;
+  readonly sequence: number;
+  readonly retained: readonly IdentitySnapshot[];
 }
 function authoredId(value: unknown): string | undefined {
   if (
@@ -33,23 +42,49 @@ export function reconcileSimulatorKeys(
     return { key: match?.key ?? createKey(), value };
   });
 }
+function allocateSnapshot(
+  values: readonly unknown[],
+  previous: readonly KeyedSimulatorValue[],
+  prefix: string,
+  sequence: number,
+) {
+  let nextSequence = sequence;
+  const entries = reconcileSimulatorKeys(values, previous, () => `${prefix}:${nextSequence++}`);
+  return { snapshot: { values, entries }, sequence: nextSequence };
+}
+function retainSnapshot(snapshot: IdentitySnapshot, previous: readonly IdentitySnapshot[]) {
+  // The current and latest proposed arrays cover controlled acceptance/rejection without
+  // retaining every keystroke's values for the lifetime of an editor.
+  return [snapshot, ...previous.filter((item) => item.values !== snapshot.values)].slice(0, 2);
+}
 export function useSimulatorKeyedValues(values: readonly unknown[]) {
   const prefix = useId();
-  const sequence = useRef(0);
-  const previous = useRef<readonly KeyedSimulatorValue[]>([]);
-  const cache = useRef(new WeakMap<readonly unknown[], readonly KeyedSimulatorValue[]>());
-  const createKey = () => `${prefix}:${sequence.current++}`;
-  const entries =
-    cache.current.get(values) ?? reconcileSimulatorKeys(values, previous.current, createKey);
-  cache.current.set(values, entries);
-  previous.current = entries;
+  const [state, setState] = useState<IdentityState>(() => {
+    const allocated = allocateSnapshot(values, [], prefix, 0);
+    return { ...allocated, retained: [allocated.snapshot] };
+  });
+  let current = state;
+  if (state.snapshot.values !== values) {
+    const known = state.retained.find((item) => item.values === values);
+    const allocated = known
+      ? { snapshot: known, sequence: state.sequence }
+      : allocateSnapshot(values, state.snapshot.entries, prefix, state.sequence);
+    current = { ...allocated, retained: retainSnapshot(allocated.snapshot, state.retained) };
+    setState(current);
+  }
+  const entries = current.snapshot.entries;
   function remember(
     next: readonly unknown[],
     candidates: readonly KeyedSimulatorValue[] = entries,
   ) {
-    const keyed = reconcileSimulatorKeys(next, candidates, createKey);
-    cache.current.set(next, keyed);
-    previous.current = keyed;
+    setState((previous) => {
+      const allocated = allocateSnapshot(next, candidates, prefix, previous.sequence);
+      return {
+        ...previous,
+        sequence: allocated.sequence,
+        retained: retainSnapshot(allocated.snapshot, previous.retained),
+      };
+    });
   }
   return { entries, remember };
 }
