@@ -83,7 +83,7 @@ function Example() {
         <SimulatorEditor
           properties={
             <label className="form-label d-block">
-              Simulator name
+              Simulator name{" "}
               <input
                 className="form-control"
                 value={name}

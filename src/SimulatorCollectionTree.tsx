@@ -177,7 +177,7 @@ export function SimulatorCollectionTree({
             className="border-0 p-0 m-0"
             style={{ minWidth: 0 }}
           >
-            <ul role="presentation" className="list-unstyled m-0">
+            <ul role="none" className="list-unstyled m-0">
               {node.children?.map((child) => row(child, node.id))}
             </ul>
           </fieldset>
