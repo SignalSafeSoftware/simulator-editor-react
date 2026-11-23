@@ -1,5 +1,9 @@
 # Current state
 
+## Prepared patch release — 0.1.3 (2026-11-22)
+
+Version 0.1.3 prepares the reliability fixes merged through `f7e0ab43f5a5496b535ff97b3963815970b7aa7a`. The latest verified public release remains 0.1.2 below; no 0.1.3 tag or publication is claimed here. See [the release preparation and verification scope](release-2026-11-22.md). Existing public peer ranges, exports and runtime styling are unchanged.
+
 ## Published registry release — 0.1.2 (2026-11-15)
 
 The immutable `v0.1.2` [release workflow](https://github.com/SignalSafeSoftware/simulator-editor-react/actions/runs/43802312670) passed complete verification and provenance publication at commit `342880a59d8ceb2167b2bb95e893b3eb9a2a73cf`. All 190 files in the actual public npm archive match the reviewed candidate. Archive SHA-256: `6cf963a7da8c479d0127c2e73ae61e86ef380afa365355019ae5dc3b6856664f`.
