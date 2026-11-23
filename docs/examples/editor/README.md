@@ -14,7 +14,7 @@ For automated browser checks, install Chromium with "npx playwright install chro
 
 This host example controls section state and projects it into a shared simulator preview. It includes synthetic conversations, email, contacts, call history and a sandbox browser page. Nothing is saved, sent or synchronized with a server. Reset restores the fixture; Download exports the editor section data, not a host-specific published simulator envelope.
 
-The example installs editor 0.1.2, core 0.7.3, React 0.22.0, device 0.22.0 and theme 0.13.5 from npm. The lockfile records actual registry integrity values; no local editor archive or path alias is selected. The host supplies the editable simulator-name Properties slot; Properties, Preview and JSON share one tab row and retain state across switches.
+The example installs editor 0.1.3, core 0.7.3, React 0.22.0, device 0.22.0 and theme 0.13.5 from npm. The lockfile records actual registry integrity values; no local editor archive or path alias is selected. The host supplies the editable simulator-name Properties slot; Properties, Preview and JSON share one tab row and retain state across switches.
 
 The editor accepts a renderPreview slot. The example's adapter owns projection and session state; screens, contact cards and shared styling remain package-owned. A real host must supply persistence, authorization and the rest of its integrations.
 

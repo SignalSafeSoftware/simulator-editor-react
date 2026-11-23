@@ -1,8 +1,12 @@
 # Current state
 
-## Prepared patch release — 0.1.3 (2026-11-22)
+## Published registry release — 0.1.3 (2026-11-22)
 
-Version 0.1.3 prepares the reliability fixes merged through `f7e0ab43f5a5496b535ff97b3963815970b7aa7a`. The latest verified public release remains 0.1.2 below; no 0.1.3 tag or publication is claimed here. See [the release preparation and verification scope](release-2026-11-22.md). Existing public peer ranges, exports and runtime styling are unchanged.
+The immutable `v0.1.3` [release workflow](https://github.com/SignalSafeSoftware/simulator-editor-react/actions/runs/45089644927) passed verification and provenance publication at commit `448705a0c0714484cdf40da9e092cd46a6df33dc`. The public npm archive is byte-identical to the reviewed candidate, including all 191 members. Archive SHA-256: `b99bd160e86eb9c294da3c89583e8f35a6072a32ed17fbad551c3146ea590ba7`.
+
+This patch contains the 23 merged reliability fixes, including explicit label spacing, linear email punctuation stripping, ordinal regional-option sorting and `Number.NaN`. Existing peer ranges, exports and runtime styling are unchanged. Release verification passed 206 tests with 100% executable-source coverage, strict source/test types, lint/module checks, formatting, build, packed consumers for both supported React cohorts and five example browser tests. See [the preparation record and verification scope](release-2026-11-22.md).
+
+The source example now selects published editor 0.1.3 with core 0.7.3, React/device 0.22.0 and theme 0.13.5 through genuine registry lock entries. This source adoption does not claim a new GitHub Pages deployment or application deployment. Previous release checkpoints below remain historical.
 
 ## Published registry release — 0.1.2 (2026-11-15)
 

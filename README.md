@@ -2,7 +2,7 @@
 
 [Repository](https://github.com/SignalSafeSoftware/simulator-editor-react) · [Live editor example](https://signalsafesoftware.github.io/simulator-editor-react/) · [Package links and examples](docs/links.md)
 
-Release source: **0.1.2**. See [current summary](docs/current-state-summary.md), [changelog](CHANGELOG.md) and [November 15 release procedure](docs/release-2026-11-15.md). Publication status and installed host versions are tracked separately.
+Release source: **0.1.3**. See [current summary](docs/current-state-summary.md), [changelog](CHANGELOG.md) and [November 22 release verification](docs/release-2026-11-22.md). Publication status and installed host versions are tracked separately.
 
 Controlled React authoring for simulator content. This package contains the existing conversation, message, contact, email, phone, browser, Home and starting-screen editors extracted from DeliveryPlus.
 
@@ -29,7 +29,7 @@ Import Bootstrap 5 once in the host, then `@signalsafe/simulator-editor-react/st
 ## Installation
 
 ```sh
-npm install @signalsafe/simulator-editor-react@0.1.1
+npm install @signalsafe/simulator-editor-react@0.1.3
 ```
 
 Install its declared React, Bootstrap and SignalSafe peer dependencies in your host. DeliveryPlus uses the published package directly; local review archives and TypeScript aliases are not required.
