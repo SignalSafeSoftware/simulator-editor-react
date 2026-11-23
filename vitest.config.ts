@@ -8,7 +8,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       thresholds: { statements: 100, branches: 100, functions: 100, lines: 100 },
-      include: ["src/**/*.{ts,tsx}"],
+      include: ["src/**/*.{ts,tsx}", "scripts/clean-dist.mjs"],
       reporter: ["text", "json-summary", "lcov"],
     },
   },
