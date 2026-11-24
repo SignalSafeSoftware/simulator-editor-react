@@ -49,7 +49,7 @@ jobs:
         with:
           node-version: '24'
           registry-url: https://registry.npmjs.org
+      - name: Install npm with trusted publishing support
+        run: npm install --global npm@11.21.2 --ignore-scripts
       - name: Publish verified package
         run: npm publish --access public --provenance --ignore-scripts
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
