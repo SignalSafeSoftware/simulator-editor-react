@@ -1,4 +1,20 @@
-# Current state
+# Current npm release: @signalsafe/simulator-editor-react 0.1.4
+
+The trusted-publishing migration prepares patch `0.1.4` under immutable
+GitHub tag `v0.1.4`. Current release and authentication instructions are in
+[RELEASING.md](../RELEASING.md); the migration uses GitHub Actions OIDC rather than
+a permanent npm publishing token. Runtime exports and dependency ranges are
+unchanged by this patch. Host adoption and Python releases remain independent.
+
+The release workflow is the source of publication evidence. This documentation
+follow-up does not reseal or republish an immutable package archive or move a tag.
+
+## Historical release and state record
+
+The previous snapshot below is retained for context; its version and publication
+status statements apply to that earlier snapshot.
+
+### Current state
 
 ## Published registry release — 0.1.3 (2026-11-22)
 
