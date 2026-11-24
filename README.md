@@ -1,5 +1,10 @@
 # @signalsafe/simulator-editor-react
 
+[![Build](https://github.com/SignalSafeSoftware/simulator-editor-react/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/SignalSafeSoftware/simulator-editor-react/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/@signalsafe/simulator-editor-react?logo=npm)](https://www.npmjs.com/package/@signalsafe/simulator-editor-react)
+[![npm downloads per month](https://img.shields.io/npm/dm/@signalsafe/simulator-editor-react?label=downloads%2Fmonth)](https://www.npmjs.com/package/@signalsafe/simulator-editor-react)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://github.com/SignalSafeSoftware/simulator-editor-react/blob/main/LICENSE)
+
 [Repository](https://github.com/SignalSafeSoftware/simulator-editor-react) · [Live editor example](https://signalsafesoftware.github.io/simulator-editor-react/) · [Package links and examples](docs/links.md)
 
 Release source: **0.1.3**. See [current summary](docs/current-state-summary.md), [changelog](CHANGELOG.md) and [November 22 release verification](docs/release-2026-11-22.md). Publication status and installed host versions are tracked separately.
