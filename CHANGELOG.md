@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.4 — 2026-11-23
+
+- Publish npm releases through GitHub Actions OIDC trusted publishing.
+- Document the designated publisher, validation and token retirement process.
+
 ## 0.1.3 — prepared 2026-11-22
 
 - Make spacing explicit between authoring labels and their existing controls without changing accessible names or adding wrappers.
